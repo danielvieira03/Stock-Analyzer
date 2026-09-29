@@ -6,6 +6,14 @@ A Claude Code / Cowork plugin marketplace (`daniel-plugins`) containing one plug
 
 ## Install
 
+In the Claude app (Cowork): open the plugins area, choose to add a marketplace from GitHub, and paste the repo link:
+
+```
+https://github.com/danielvieira03/Stock-Analyzer
+```
+
+Then install `annual-report-analyzer` from the `daniel-plugins` marketplace.
+
 In Claude Code:
 
 ```
