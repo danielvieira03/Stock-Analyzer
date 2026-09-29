@@ -1,0 +1,19 @@
+{
+  "name": "daniel-plugins",
+  "version": "1.0.0",
+  "metadata": {
+    "description": "Daniel's Claude Code plugins"
+  },
+  "owner": {
+    "name": "Daniel"
+  },
+  "plugins": [
+    {
+      "name": "annual-report-analyzer",
+      "description": "Analyze a company's 10-K/10-Q and generate a Buy/Hold/Sell investment memo as a formatted PDF.",
+      "source": "./annual-report-analyzer",
+      "category": "finance",
+      "keywords": ["10-K", "10-Q", "investment memo", "equity research", "stock analysis"]
+    }
+  ]
+}
