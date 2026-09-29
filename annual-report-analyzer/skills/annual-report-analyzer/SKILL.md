@@ -1,0 +1,122 @@
+---
+name: annual-report-analyzer
+description: Analyze a public company's annual report (10-K) or quarterly report (10-Q), combine it with current outside research, and produce a professional investment memo with a Buy / Hold / Sell rating, executive summary, industry and competitive analysis, management assessment, financial health review, risks, and conclusion, delivered as a formatted PDF. Use this skill whenever the user asks to analyze, review, summarize, evaluate, or "write up" a company's 10-K, 10-Q, annual report, or SEC filing, asks for an investment memo, equity research note, stock pitch, or buy/hold/sell recommendation on a public company, or uploads a filing and wants to know whether the stock is worth owning, even if they never say the word "memo". ALWAYS trigger this skill immediately, with no clarifying questions about the trigger itself, whenever a message starts with "/analyze-stock" — treat everything after that phrase as the company name, ticker, or filing reference to analyze (e.g. "/analyze-stock Netflix" means analyze Netflix; "/analyze-stock NVDA 10-Q" means analyze NVIDIA's 10-Q).
+---
+
+# Annual Report Analyzer
+
+Turn a company's SEC filing into an investment memo a portfolio manager could read in ten minutes and act on. The filing is the backbone of the analysis; outside research supplies what a filing cannot: current price and valuation, news since the filing, the competitive landscape, and independent views of management.
+
+The memo is only useful if the reader can trust it. Every number should trace to a source, every judgment should be visibly the analyst's, and the rating should follow from the evidence rather than decorate it.
+
+## The /analyze-stock shorthand
+
+A message starting with `/analyze-stock` is a request to run this whole skill, not literal text to analyze. Strip the `/analyze-stock` prefix and treat the rest as the intake answer (company name or ticker, and optionally a filing type or an uploaded file). `/analyze-stock Netflix` means: run the workflow below for Netflix. If nothing follows the prefix, ask which company per the Intake step. Do not mention that this is "shorthand" or explain the mechanism back to the user — just proceed as if they'd asked in plain language.
+
+## Workflow
+
+Work through these stages in order. Do not skip the intake or the source labeling, since those are what make the memo auditable.
+
+### 1. Intake
+
+Establish three things. If the user already gave them, do not ask again.
+
+- **Company**: name or ticker.
+- **Filing**: the latest 10-K by default; a 10-Q if the user asks for it or if the 10-Q is more recent and they want an update. If they uploaded a file, use it and confirm the company, form type, and period covered.
+- **Angle** (optional): a holding period or lens such as "long-term compounder", "value", or "income". Default to a 12-month view for a generalist investor.
+
+Ask at most one short question if something essential is missing. Otherwise proceed.
+
+### 2. Get the filing
+
+- **Uploaded file**: read it directly.
+- **Otherwise**: find it on SEC EDGAR (sec.gov). Search for the company's filing index, then fetch the primary document of the most recent 10-K or 10-Q. Confirm the fiscal period before relying on it.
+- If the filing cannot be retrieved, say so plainly and ask the user to upload it. Never write filing-based statements from memory of what a company "usually" reports.
+
+Note the filing date, fiscal period end, and form type. They go on the cover of the memo.
+
+### 3. Read the filing deliberately
+
+Read for what matters to an investor. Section guides are in `references/filing-guide.md`; the short version:
+
+- **Business (Item 1)** for what the company sells, to whom, and how it makes money, plus segments and geography.
+- **Risk factors (Item 1A)** for which risks are specific to this company versus boilerplate. Prioritize the specific ones and any that are new or reworded since the prior year.
+- **MD&A (Item 7)** for management's own explanation of results, and where the explanation is thin or evasive.
+- **Financial statements and notes (Item 8)** for the numbers, and especially the notes on revenue recognition, debt, leases, contingencies, segment data, and any restatements or non-standard accounting.
+- **Other items** such as legal proceedings, share repurchases, insider ownership, and controls and procedures (material weaknesses matter).
+
+For a 10-Q, focus on what changed: quarter-over-quarter and year-over-year trends, updated guidance, new risk disclosures, liquidity changes. Keep the annual 10-K context in mind so the update is not read in isolation.
+
+### 4. Compute the financial picture
+
+Pull the figures directly from the statements and calculate what is needed to assess health. Use `references/financial-metrics.md` for definitions. At minimum cover:
+
+- Growth: revenue and earnings trend over the periods available (three years for a 10-K).
+- Profitability: gross, operating, and net margins, plus return on equity or invested capital.
+- Cash generation: operating cash flow, capex, free cash flow, and the conversion of net income to cash.
+- Balance sheet: cash, total debt, net debt, interest coverage, current ratio, and debt maturities.
+- Capital allocation: buybacks, dividends, acquisitions, and share count trend.
+
+Show your inputs for any calculated figure so the reader can check it (for example, "FCF = $12.4B operating cash flow − $3.1B capex = $9.3B"). If a figure is adjusted (non-GAAP, excluding one-offs), say what was adjusted and why.
+
+### 5. Research outside the filing
+
+A filing is backward-looking and management-authored. Use web search to add:
+
+- **Market context**: current share price, market cap, and valuation multiples (P/E, EV/EBITDA, price-to-FCF, or whatever fits the business), and how they compare to the company's own history and to peers.
+- **What happened since the filing**: earnings releases, guidance changes, M&A, litigation, regulatory actions, leadership changes.
+- **Industry and competitors**: market size and growth, structure, key rivals, and share trends, from credible sources.
+- **Management**: tenure, track record, insider buying or selling, compensation alignment, and any governance concerns. Proxy statements (DEF 14A) are a good source.
+- **Outside views**: credible bull and bear arguments, so the memo engages the strongest objections rather than only the ones that fit the thesis.
+
+Prefer primary and high-quality sources: company investor relations pages, SEC filings, earnings call transcripts, and established financial press. Treat forums and anonymous commentary as color, not evidence. Record the date of every market data point, since prices and multiples go stale within days.
+
+### 6. Form the view
+
+Decide the rating using `references/rating-framework.md`. The core idea: a rating is a judgment about the gap between what the business is likely worth and what the market is paying, weighed against the risk of being wrong. Quality alone does not make a Buy, and a troubled company is not automatically a Sell if the price already reflects it.
+
+Before writing, state to yourself the thesis in two sentences and the single most likely way it fails. If you cannot, the analysis is not finished.
+
+### 7. Write the memo
+
+Use the structure in `references/memo-structure.md`. The sections, in order:
+
+1. Executive Summary (with rating up front)
+2. Company Information
+3. Industry Analysis
+4. Competitive Advantage
+5. Management
+6. Financial Health
+7. Risks
+8. Recommendation: Buy / Hold / Sell
+9. Conclusion
+10. Sources and Methodology
+
+Writing standards:
+
+- **Lead with the answer.** The first paragraph states the rating, the thesis, and the two or three facts that drive it.
+- **Prose over bullets.** Write connected analysis, explaining why numbers matter rather than listing them. Use tables for financial data and comparisons, where they genuinely help.
+- **Label the source of every material claim.** Use `[F]` for facts taken from the filing (with the item or page where practical) and `[W]` for facts from web research (with source name and date). Unlabeled statements are read as the analyst's own judgment. This convention is what lets a reader separate the company's claims from independent evidence.
+- **Be specific and quantified.** "Operating margin fell from 24% to 21% as freight costs rose" beats "margins came under pressure."
+- **Be balanced.** Give the bear case real weight in the Risks section and in the rating logic.
+- **Be honest about uncertainty.** If data is missing or an estimate is rough, say so once, where it matters, and move on.
+
+### 8. Produce the deliverable
+
+Write the memo as Markdown following the syntax notes in `references/memo-structure.md`, then render it to PDF:
+
+```bash
+python scripts/build_memo_pdf.py memo.md "<Company>_Investment_Memo.pdf"
+```
+
+The script needs `reportlab` (`pip install reportlab`). It gives every memo the same layout: cover block with the rating, consistent headings, tables, and page footers. If Python or file creation is unavailable in the current environment, deliver the memo as Markdown in the chat and mention that the PDF step needs a code-execution environment.
+
+Finish by giving the user the file and a two-to-three sentence summary of the rating and why. Do not repeat the whole memo in chat.
+
+## Guardrails
+
+- **Not personalized advice.** The memo is analysis for informational purposes. Include the standard disclaimer from `references/memo-structure.md` on the last page, and do not tailor the rating to the user's personal financial situation.
+- **Never fabricate.** If a number, quote, or fact was not found, leave it out or flag it as unavailable. A shorter accurate memo beats a complete-looking one with invented details.
+- **Separate what management says from what is true.** Filings are advocacy documents. Where management's narrative and the numbers diverge, point it out.
+- **Stay current.** Use today's date for market data and state it in the memo. Do not rely on remembered prices or multiples.
+- **One company per memo.** If asked to compare companies, produce a memo for each and add a short comparison, rather than blending them.
