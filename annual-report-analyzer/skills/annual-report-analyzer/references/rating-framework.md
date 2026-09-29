@@ -46,13 +46,13 @@ Adjust one notch toward caution when:
 
 ## Valuation range
 
-Provide a rough value range rather than a false-precision price target. Acceptable methods, in order of preference for most companies:
+The price target comes from the Scenario Analysis: a probability-weighted price across bull, base, and bear cases. Present it with the range of the three cases so it does not read as false precision. Acceptable methods, in order of preference for most companies:
 
 1. **Multiple-based**: apply a defensible multiple (based on the company's history and peers) to a forward earnings, cash flow, or EBITDA estimate.
 2. **Simple DCF or FCF yield**: state growth, margin, and discount rate assumptions in plain terms, and show how sensitive the result is to them.
 3. **Sum of the parts** for conglomerates with very different segments.
 
-Present a **bear / base / bull** range, each with the assumptions that produce it and an approximate probability weighting or at least a sense of which is most likely. If any inputs are estimates you have assembled from web sources, label them `[W]` and flag them as estimates.
+Present **bull / base / bear** cases, each with a probability (summing to 100%), next-year revenue and EPS growth, forward EPS, a P/E multiple, and the price that follows (forward EPS x P/E). The target is the sum of probability x price; show the arithmetic. If any inputs are estimates you have assembled from web sources, label them `[W]` and flag them as estimates.
 
 ## Confidence and what would change the view
 

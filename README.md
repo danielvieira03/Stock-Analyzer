@@ -16,7 +16,7 @@ Give it a company and it does what an equity analyst would: it reads the filing,
 4. **Compute the financials:** growth, margins, free cash flow, debt and coverage, and capital allocation, with the inputs shown so you can check the math.
 5. **Research outside the filing:** current price and multiples, news since the filing, competitors, management and insider activity, and the strongest bull and bear arguments.
 6. **Form the view:** the rating comes from four questions (quality, trajectory, price, risk), not from the company's story. A great business isn't a Buy at any price, and a beaten-down one isn't a Buy just because it fell.
-7. **Write and render:** ten fixed sections, from Executive Summary to Sources and Methodology, rendered to a PDF with a cover strip showing the rating.
+7. **Write and render:** twelve fixed sections plus a sources appendix, rendered to a PDF with a header band, rating badge and stat tiles for price, market cap, target and upside.
 
 ## How to read a memo
 
@@ -53,7 +53,22 @@ The PDF step needs Python with `reportlab` (`pip install reportlab`). Without it
 
 ## What's in a memo
 
-Ten sections, always in the same order: Executive Summary, Company Information, Industry Analysis, Competitive Advantage, Management, Financial Health, Risks, Recommendation (Buy / Hold / Sell), Conclusion, and Sources and Methodology.
+Twelve sections, always in the same order, plus a sources appendix:
+
+1. **Executive Summary:** a one-page snapshot with the rating, price, market cap, target and headline figures.
+2. **Company Overview**
+3. **Industry Analysis**
+4. **Competitive Advantage**
+5. **Management**
+6. **Financial Analysis**
+7. **Recommendation:** Buy / Hold / Sell, with bull, base and bear probabilities and price-target ranges, and what would change the view.
+8. **Scenario Analysis:** per case, the probability, growth, forward EPS, P/E and price, plus the probability-weighted price target.
+9. **Risks and Catalysts:** the top five of each, ranked and labeled High / Medium / Low (only those found).
+10. **Wall Street Perspectives:** big-bank price targets with a one-sentence reason each.
+11. **Peer Analysis:** ratios only (P/E, EV/EBITDA, margins, market cap, revenue growth) against the main competitors.
+12. **Investment Conclusion**
+
+Sources and Methodology closes the report as an appendix.
 
 ## Installing the skill on its own (without the plugin)
 

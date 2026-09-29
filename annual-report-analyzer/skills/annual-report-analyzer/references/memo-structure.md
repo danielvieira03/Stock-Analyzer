@@ -1,6 +1,6 @@
-# Memo Structure and Markdown Syntax
+# Report Structure and Markdown Syntax
 
-Every memo uses the same sections in the same order, so readers learn where to find things and memos can be compared. Target length: 6-10 pages.
+Every report uses the same sections in the same order, so readers learn where to find things and reports can be compared. Target length: 6-10 pages.
 
 ## Contents
 - Header block (metadata)
@@ -12,7 +12,7 @@ Every memo uses the same sections in the same order, so readers learn where to f
 
 ## Header block (metadata)
 
-The memo begins with a metadata block the PDF builder turns into a cover strip. Use these exact keys:
+The report begins with a metadata block the PDF builder turns into the page-1 header band and stat tiles. Use these exact keys:
 
 ```
 ---
@@ -22,45 +22,59 @@ rating: Buy
 filing: Form 10-K, fiscal year ended September 28, 2024
 date: 2026-09-28
 price: $000.00 (as of 2026-09-28)
+market_cap: $0.0T
+price_target: $000 (12-month, probability-weighted)
+upside: +0.0%
 value_range: $000 - $000
 horizon: 12 months
 confidence: Medium
 ---
 ```
 
-`rating` must be exactly `Buy`, `Hold`, or `Sell`. The builder colors the rating badge accordingly. `date` is the memo date. `price` includes its as-of date.
+`rating` must be exactly `Buy`, `Hold`, or `Sell`. The builder colors the rating badge accordingly. `date` is the report date. `price` includes its as-of date in parentheses; text in parentheses is shown as a small note under the value. `price_target` is the probability-weighted price from the Scenario Analysis. `upside` is target versus price, with a sign (`+12.4%` or `-6.0%`). `value_range` is the bear-to-bull span and is shown only if `price_target` is missing. Any missing key shows a dash.
 
 ## Section-by-section guide
 
-### 1. Executive Summary
-Half a page. State the rating, the thesis in two or three sentences, the three to five facts that drive it, the main risk, and the valuation range versus the current price. A reader who stops here should still know what you think and why.
+Section headings are numbered automatically. Write them without numbers. Section 1 sits alone on page 1 with the header band, so keep it to one page.
 
-### 2. Company Information
-What the company does, how it makes money, revenue by segment and geography, key products, customers, scale (revenue, employees, market cap), and any recent strategic changes. Include a small table of key facts if helpful.
+### 1. Executive Summary
+A one-page snapshot. State the rating, the thesis in two or three sentences, the three to five facts that drive it, the main risk, and the probability-weighted price target versus the current price. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear in the stat tiles, so do not repeat them in a table.
+
+### 2. Company Overview
+What the company does, how it makes money, revenue by segment and geography, key products, customers, scale (revenue, employees, market cap), and any recent strategic changes. A segment table is usually worth including.
 
 ### 3. Industry Analysis
 Market size and growth, structure (fragmented vs concentrated), cycle sensitivity, regulation, secular tailwinds and headwinds, and the forces that determine industry profitability. Draw on web sources; label them.
 
 ### 4. Competitive Advantage
-Does the company have a durable edge, and is it widening or narrowing? Assess the sources: scale, network effects, switching costs, brand, cost position, intangible assets, regulatory barriers. Name the main competitors and compare on the metrics that matter. Support claims with evidence such as margins persisting above peers, market share trends, or pricing power.
+Does the company have a durable edge, and is it widening or narrowing? Assess the sources: scale, network effects, switching costs, brand, cost position, intangible assets, regulatory barriers. Name the main competitors qualitatively. Leave the numeric comparison to Peer Analysis (Section 11) and refer to it rather than repeating it. Support claims with evidence such as margins persisting above peers, market share trends, or pricing power.
 
 ### 5. Management
 Who runs the company, tenure and background, track record against past targets, capital allocation decisions, compensation alignment with shareholders, insider ownership and transactions, and governance (board independence, dual-class shares, related-party dealings). Be candid about strengths and concerns.
 
-### 6. Financial Health
-The core numbers with interpretation. Include a multi-year table (revenue, growth, margins, net income, FCF, net debt, key ratios), then discuss growth, profitability, cash generation, balance sheet strength, and capital allocation. Note accounting quality issues or non-GAAP adjustments. Include current valuation multiples versus history and peers.
+### 6. Financial Analysis
+The core numbers with interpretation. Include a multi-year table (revenue, growth, margins, net income, EPS, FCF, net debt, key ratios), then discuss growth, profitability, cash generation, balance sheet strength, and capital allocation. Note accounting quality issues or non-GAAP adjustments. Valuation multiples versus peers belong in Peer Analysis.
 
-### 7. Risks
-Rank the risks by importance, not by where they appeared in the filing. For each major risk, describe it, explain how it would show up in the financials, and note any evidence it is already materializing. Distinguish company-specific risks from general market or macro risk. Include the strongest bear-case argument.
+### 7. Recommendation
+State the rating and the reasoning through the four questions (quality, trajectory, price, risk). Then a compact table with one row per case: **Bull**, **Base**, **Bear**, with columns for probability, price-target range, and the key assumption. The full build is in Section 8; do not repeat its numbers beyond this table. Under a `### What would change our view` subheading, list two or three observable triggers for a more positive view and for a more negative view. End with the confidence level and its main reason.
 
-### 8. Recommendation: Buy / Hold / Sell
-State the rating again and the reasoning through the four questions (quality, trajectory, price, risk). Present the bear / base / bull value range with assumptions. Give confidence, and what would make the view more positive or more negative.
+### 8. Scenario Analysis
+One table with a row per case (Bull, Base, Bear) and columns for probability, revenue growth, EPS growth, forward EPS, P/E multiple, and price. Growth targets are next-fiscal-year figures. Price = forward EPS x P/E. Add a final row starting with `Weighted` that shows the probability-weighted values. Probabilities must sum to 100% and the weighted price must equal the sum of probability x price; show that arithmetic in one sentence above the table. The weighted price is the price target.
 
-### 9. Conclusion
-One short paragraph: the final take and the single most important thing to watch.
+### 9. Risks and Catalysts
+Two ranked tables under `### Top Risks` and `### Top Catalysts` subheadings, each with columns Rank, the item, Why it matters, and a level label (`Level` for risks, `Importance` for catalysts). Levels are exactly `High`, `Medium`, or `Low`, and the builder colors them (for risks High is red; for catalysts High is green). Up to five each, ranked most important first. If fewer than five well-supported items exist, list only those and say so in one sentence. Do not pad. For each risk, say how it would show up in the financials. Include the strongest bear-case argument.
 
-### 10. Sources and Methodology
-List the filing (form, period, filing date) and each web source with title, publisher, and access date. Note calculation conventions and any significant estimates or data gaps.
+### 10. Wall Street Perspectives
+A table of price targets from major banks and brokers found in dated public sources: Firm, Date, Rating, Price target, and a Reason limited to one sentence. Add a final `Consensus` row with the rating split and the mean target. Include only targets you actually found; never invent or estimate a target. If a source is paywalled or unavailable, say so.
+
+### 11. Peer Analysis
+A ratios-only table of the company against its three to five main competitors, with columns: P/E, EV/EBITDA, Operating margin, Net margin, FCF margin, Market cap, Revenue growth y/y. Put the subject company first and end with a `Peer median` row. State the as-of date and use consistent definitions across companies (trailing or forward, stated once).
+
+### 12. Investment Conclusion
+One short paragraph: the final take, the rating and target, and the single most important thing to watch.
+
+### Appendix: Sources and Methodology
+Shown as lettered section "A" in smaller type. List the filing (form, period, filing date) and each web source with title, publisher, and access date. Note calculation conventions and any significant estimates or data gaps. Finish with the disclaimer.
 
 ## Source labels
 
@@ -68,34 +82,35 @@ List the filing (form, period, filing date) and each web source with title, publ
 - `[W]` fact from web research; add the source and date, e.g. `[W, Reuters, 2026-09-15]`
 - Unlabeled statements are the analyst's own judgment
 
-Apply labels to numbers, quotes, and non-obvious factual claims. Do not label every sentence; that makes the memo unreadable.
+Apply labels to numbers, quotes, and non-obvious factual claims. Do not label every sentence; that makes the report unreadable.
 
 ## Markdown syntax supported by the PDF builder
 
 The builder handles a deliberately small set of syntax so output stays consistent:
 
 - `---` metadata block at the very top (see above)
-- `# Title` is ignored in favor of the cover block, but may be included for readability
-- `## Section heading` and `### Subheading`
+- `# Title` is ignored in favor of the header band, but may be included for readability
+- `## Section heading` (auto-numbered) and `### Subheading`
 - Paragraphs separated by blank lines
-- `- item` bullet lists (use sparingly)
+- `- item` bullet lists and `1. item` numbered lists (use sparingly)
 - Pipe tables with a header separator row:
   ```
   | Metric | FY2022 | FY2023 | FY2024 |
   |--------|--------|--------|--------|
   | Revenue ($B) | 394.3 | 383.3 | 391.0 |
   ```
+  Numeric columns right-align automatically. Rows starting with `Weighted`, `Median`, `Peer median`, `Average`, `Mean`, `Total`, or `Consensus` are styled as summary rows. Cells reading Buy / Hold / Sell, Bull / Base / Bear, or High / Medium / Low are colored. Tables up to eight columns fit the page.
 - `**bold**` and `*italic*` inline
 - `> note` for a callout box (good for the key takeaway of a section)
 - `---` on its own line after the metadata block inserts a horizontal rule
 
-Avoid raw HTML, images, and nested lists. Use plain text for special characters; ampersands and angle brackets are handled automatically.
+Avoid raw HTML, images, and nested lists. Use plain text for special characters: the PDF fonts lack glyphs such as >=, ~, and arrows (common ones are converted automatically, but plain ASCII is safest). Ampersands and angle brackets are handled automatically.
 
 ## Disclaimer text
 
 Place this as the final paragraph of Sources and Methodology:
 
-> This memo is an analytical summary based on public filings and publicly available information as of the date shown. It is for informational purposes only and does not constitute personalized investment advice, an offer, or a solicitation to buy or sell any security. Figures may contain errors or omissions; verify against primary sources before making decisions. Past performance does not guarantee future results.
+> This report is an analytical summary based on public filings and publicly available information as of the date shown. It is for informational purposes only and does not constitute personalized investment advice, an offer, or a solicitation to buy or sell any security. Figures may contain errors or omissions; verify against primary sources before making decisions. Past performance does not guarantee future results.
 
 ## Skeleton
 
@@ -107,6 +122,9 @@ rating:
 filing: 
 date: 
 price: 
+market_cap: 
+price_target: 
+upside: 
 value_range: 
 horizon: 12 months
 confidence: 
@@ -114,7 +132,7 @@ confidence:
 
 ## Executive Summary
 
-## Company Information
+## Company Overview
 
 ## Industry Analysis
 
@@ -122,13 +140,25 @@ confidence:
 
 ## Management
 
-## Financial Health
+## Financial Analysis
 
-## Risks
+## Recommendation
 
-## Recommendation: Buy / Hold / Sell
+### What would change our view
 
-## Conclusion
+## Scenario Analysis
+
+## Risks and Catalysts
+
+### Top Risks
+
+### Top Catalysts
+
+## Wall Street Perspectives
+
+## Peer Analysis
+
+## Investment Conclusion
 
 ## Sources and Methodology
 ```

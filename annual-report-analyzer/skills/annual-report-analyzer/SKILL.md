@@ -74,6 +74,8 @@ A filing is backward-looking and management-authored. Use web search to add:
 - **Industry and competitors**: market size and growth, structure, key rivals, and share trends, from credible sources.
 - **Management**: tenure, track record, insider buying or selling, compensation alignment, and any governance concerns. Proxy statements (DEF 14A) are a good source.
 - **Outside views**: credible bull and bear arguments, so the memo engages the strongest objections rather than only the ones that fit the thesis.
+- **Wall Street targets**: recent price targets and ratings from major banks and brokers, each with firm, date, and the stated reason, plus the consensus rating split and mean target where available. Record only what you find in dated public sources; if targets are paywalled or unavailable, say so rather than estimating.
+- **Peer ratios**: for the three to five closest competitors, P/E, EV/EBITDA, operating margin, net margin, FCF margin, market cap, and year-over-year revenue growth, all as of the same date and on consistent definitions.
 
 Prefer primary and high-quality sources: company investor relations pages, SEC filings, earnings call transcripts, and established financial press. Treat forums and anonymous commentary as color, not evidence. Record the date of every market data point, since prices and multiples go stale within days.
 
@@ -81,22 +83,28 @@ Prefer primary and high-quality sources: company investor relations pages, SEC f
 
 Decide the rating using `references/rating-framework.md`. The core idea: a rating is a judgment about the gap between what the business is likely worth and what the market is paying, weighed against the risk of being wrong. Quality alone does not make a Buy, and a troubled company is not automatically a Sell if the price already reflects it.
 
+Build the bull, base, and bear cases before choosing the rating: for each, a probability, next-year revenue and EPS growth, forward EPS, and a P/E multiple. The probability-weighted price is the price target, and the rating follows from how it compares with today's price.
+
 Before writing, state to yourself the thesis in two sentences and the single most likely way it fails. If you cannot, the analysis is not finished.
 
 ### 7. Write the memo
 
 Use the structure in `references/memo-structure.md`. The sections, in order:
 
-1. Executive Summary (with rating up front)
-2. Company Information
+1. Executive Summary (one-page snapshot with the rating up front)
+2. Company Overview
 3. Industry Analysis
 4. Competitive Advantage
 5. Management
-6. Financial Health
-7. Risks
-8. Recommendation: Buy / Hold / Sell
-9. Conclusion
-10. Sources and Methodology
+6. Financial Analysis
+7. Recommendation (Buy / Hold / Sell, with bull, base, and bear summarized)
+8. Scenario Analysis (probabilities, growth, EPS, P/E, and the probability-weighted price)
+9. Risks and Catalysts (top five each, ranked, labeled High / Medium / Low)
+10. Wall Street Perspectives
+11. Peer Analysis (ratios only)
+12. Investment Conclusion
+
+Sources and Methodology follows as an appendix. `references/memo-structure.md` says what each section must contain and how the tables are laid out.
 
 Writing standards:
 
@@ -104,7 +112,8 @@ Writing standards:
 - **Prose over bullets.** Write connected analysis, explaining why numbers matter rather than listing them. Use tables for financial data and comparisons, where they genuinely help.
 - **Label the source of every material claim.** Use `[F]` for facts taken from the filing (with the item or page where practical) and `[W]` for facts from web research (with source name and date). Unlabeled statements are read as the analyst's own judgment. This convention is what lets a reader separate the company's claims from independent evidence.
 - **Be specific and quantified.** "Operating margin fell from 24% to 21% as freight costs rose" beats "margins came under pressure."
-- **Be balanced.** Give the bear case real weight in the Risks section and in the rating logic.
+- **Be balanced.** Give the bear case real weight in the Risks section, the scenarios, and the rating logic.
+- **Keep the numbers consistent.** Scenario probabilities sum to 100%, each price is forward EPS times P/E, the target is the probability-weighted price, and the price, market cap, and target on page 1 match the body.
 - **Be honest about uncertainty.** If data is missing or an estimate is rough, say so once, where it matters, and move on.
 
 ### 8. Produce the deliverable
@@ -115,7 +124,7 @@ Write the memo as Markdown following the syntax notes in `references/memo-struct
 python scripts/build_memo_pdf.py memo.md "<Company>_Investment_Memo.pdf"
 ```
 
-The script needs `reportlab` (`pip install reportlab`). It gives every memo the same layout: cover block with the rating, consistent headings, tables, and page footers. If Python or file creation is unavailable in the current environment, deliver the memo as Markdown in the chat and mention that the PDF step needs a code-execution environment.
+The script needs `reportlab` (`pip install reportlab`). It gives every memo the same professional layout: a header band with the rating badge, stat tiles (price, market cap, target, upside), numbered section headings, styled tables with colored labels, and page headers and footers. If Python or file creation is unavailable in the current environment, deliver the memo as Markdown in the chat and mention that the PDF step needs a code-execution environment.
 
 Finish by giving the user the file and a two-to-three sentence summary of the rating and why. Do not repeat the whole memo in chat.
 
