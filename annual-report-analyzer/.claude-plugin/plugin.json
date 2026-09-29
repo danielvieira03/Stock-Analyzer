@@ -1,0 +1,8 @@
+{
+  "name": "annual-report-analyzer",
+  "version": "1.0.0",
+  "description": "Analyze a company's 10-K/10-Q and generate a Buy/Hold/Sell investment memo as a formatted PDF.",
+  "author": {
+    "name": "Daniel"
+  }
+}
