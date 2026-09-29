@@ -46,21 +46,27 @@ If you'd rather not use the plugin/marketplace system:
 
 The PDF step needs Python with `reportlab` (`pip install reportlab`). Claude.ai's code environment handles this for you.
 
-## Repo layout (this folder)
+## Plugin layout
 
 ```
-annual-report-analyzer/            # (the skill, inside skills/ at the plugin root)
-├── SKILL.md                     # Workflow and writing standards (what Claude reads)
+annual-report-analyzer/
+├── .claude-plugin/
+│   └── plugin.json              # Plugin manifest
 ├── README.md                    # This file
-├── references/
-│   ├── filing-guide.md          # Where to look in a 10-K / 10-Q, red flags, EDGAR tips
-│   ├── financial-metrics.md     # Metric definitions and sector adjustments
-│   ├── rating-framework.md      # How Buy / Hold / Sell is decided
-│   └── memo-structure.md        # Section guide, source labels, markdown syntax
-├── scripts/
-│   └── build_memo_pdf.py        # Renders the memo Markdown to a consistent PDF
-└── examples/
-    └── sample-memo.md           # Illustrative memo showing the format (fake data)
+├── commands/
+│   └── analyze-stock.md         # The /analyze-stock slash command
+└── skills/
+    └── annual-report-analyzer/
+        ├── SKILL.md             # Workflow and writing standards (what Claude reads)
+        ├── references/
+        │   ├── filing-guide.md      # Where to look in a 10-K / 10-Q, red flags, EDGAR tips
+        │   ├── financial-metrics.md # Metric definitions and sector adjustments
+        │   ├── rating-framework.md  # How Buy / Hold / Sell is decided
+        │   └── memo-structure.md    # Section guide, source labels, markdown syntax
+        ├── scripts/
+        │   └── build_memo_pdf.py    # Renders the memo Markdown to a consistent PDF
+        └── examples/
+            └── sample-memo.md       # Illustrative memo showing the format (fake data)
 ```
 
 ## Customizing
