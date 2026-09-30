@@ -5,7 +5,7 @@ Every report uses the same sections in the same order, so readers learn where to
 ## Contents
 - Header block (metadata)
 - Section-by-section guide
-- Source labels
+- Sourcing
 - Markdown syntax supported by the PDF builder
 - Disclaimer text
 - Skeleton
@@ -76,13 +76,15 @@ One short paragraph: the final take, the rating and target, and the single most 
 ### Appendix: Sources and Methodology
 Shown as lettered section "A" in smaller type. List the filing (form, period, filing date) and each web source with title, publisher, and access date. Note calculation conventions and any significant estimates or data gaps. Finish with the disclaimer.
 
-## Source labels
+## Sourcing
 
-- `[F]` fact from the filing; add the item where practical, e.g. `[F, Item 7]`
-- `[W]` fact from web research; add the source and date, e.g. `[W, Reuters, 2026-09-15]`
-- Unlabeled statements are the analyst's own judgment
+Do not use bracketed source tags. Attribute in plain prose, and only when it adds something:
 
-Apply labels to numbers, quotes, and non-obvious factual claims. Do not label every sentence; that makes the report unreadable.
+- Refer to the filing by form (10-K, 10-Q, or 20-F) only where it matters, for example when management's narrative and the numbers diverge.
+- Name outside sources naturally, such as "according to Reuters" or "per the company's investor presentation".
+- Give the date of any market data point (price, multiples, price targets).
+- Put the full list of sources, with publisher and access date, in the Sources and Methodology appendix.
+- Statements with no attribution are read as the analyst's own judgment.
 
 ## Markdown syntax supported by the PDF builder
 

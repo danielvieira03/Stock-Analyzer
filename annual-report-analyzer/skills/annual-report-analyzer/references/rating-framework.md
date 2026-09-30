@@ -52,7 +52,7 @@ The price target comes from the Scenario Analysis: a probability-weighted price 
 2. **Simple DCF or FCF yield**: state growth, margin, and discount rate assumptions in plain terms, and show how sensitive the result is to them.
 3. **Sum of the parts** for conglomerates with very different segments.
 
-Present **bull / base / bear** cases, each with a probability (summing to 100%), next-year revenue and EPS growth, forward EPS, a P/E multiple, and the price that follows (forward EPS x P/E). The target is the sum of probability x price; show the arithmetic. If any inputs are estimates you have assembled from web sources, label them `[W]` and flag them as estimates.
+Present **bull / base / bear** cases, each with a probability (summing to 100%), next-year revenue and EPS growth, forward EPS, a P/E multiple, and the price that follows (forward EPS x P/E). The target is the sum of probability x price; show the arithmetic. If any inputs are estimates you have assembled from web sources, flag them as estimates and name the source.
 
 ## Confidence and what would change the view
 

@@ -15,7 +15,7 @@ confidence: Medium
 
 ## Executive Summary
 
-**Hold.** Example Corp is a high-quality operator whose shares already reflect its strengths. Revenue grew 8% and operating margin expanded to 21% [F, Item 7], but the stock trades at 25x trailing earnings [W, illustrative source, 2026-09-28], a premium to its five-year average and to peers. Our probability-weighted 12-month value is $103, about 3% above the current price, which does not compensate for the downside if the auto end-market slows.
+**Hold.** Example Corp is a high-quality operator whose shares already reflect its strengths. Revenue grew 8% and operating margin expanded to 21%, but the stock trades at 25x trailing earnings, a premium to its five-year average and to peers. Our probability-weighted 12-month value is $103, about 3% above the current price, which does not compensate for the downside if the auto end-market slows.
 
 > Key takeaway: a good business at a full price. We would become buyers below roughly $90 or on evidence that margins can exceed 23%.
 
@@ -28,7 +28,7 @@ confidence: Medium
 
 ## Company Overview
 
-Example Corp sells subscription software to mid-sized manufacturers. Recurring revenue is 82% of the total [F, Item 1], and no customer exceeds 5% of sales. The company employs about 4,800 people and reported $1.31B of revenue in FY2025.
+Example Corp sells subscription software to mid-sized manufacturers. Recurring revenue is 82% of the total, and no customer exceeds 5% of sales. The company employs about 4,800 people and reported $1.31B of revenue in FY2025.
 
 | Segment | Revenue ($M) | Share | Growth y/y |
 |---------|--------------|-------|-----------|
@@ -38,19 +38,19 @@ Example Corp sells subscription software to mid-sized manufacturers. Recurring r
 
 ## Industry Analysis
 
-Manufacturing software is a roughly $40B market growing at 7-9% a year [W, illustrative source, 2026-09-15]. The industry is fragmented at the low end and concentrated among four vendors at the top. Demand is cyclical with factory capital spending, but subscription models have cut revenue volatility in the last two downturns.
+Manufacturing software is a roughly $40B market growing at 7-9% a year. The industry is fragmented at the low end and concentrated among four vendors at the top. Demand is cyclical with factory capital spending, but subscription models have cut revenue volatility in the last two downturns.
 
 ## Competitive Advantage
 
-Switching costs are the main source of advantage: customers embed the platform in production workflows, and gross retention has held above 95% for three years [F, Item 7]. Scale in data is a second, narrower edge. Margins above the peer median for five years support the view that the edge is real, but two larger rivals are bundling similar features into existing contracts, so we see the moat as stable rather than widening.
+Switching costs are the main source of advantage: customers embed the platform in production workflows, and gross retention has held above 95% for three years. Scale in data is a second, narrower edge. Margins above the peer median for five years support the view that the edge is real, but two larger rivals are bundling similar features into existing contracts, so we see the moat as stable rather than widening.
 
 ## Management
 
-The CEO has led the company for eight years and delivered against its last three medium-term targets [F, Item 7]. Capital allocation has been disciplined: buybacks retired 2% of shares in FY2025 and acquisitions have been small and tuck-in. Insiders own 4% of the shares, and executive pay is weighted toward free cash flow per share, which aligns with shareholders.
+The CEO has led the company for eight years and delivered against its last three medium-term targets. Capital allocation has been disciplined: buybacks retired 2% of shares in FY2025 and acquisitions have been small and tuck-in. Insiders own 4% of the shares, and executive pay is weighted toward free cash flow per share, which aligns with shareholders.
 
 ## Financial Analysis
 
-Revenue growth has held near 8-9% while operating margin expanded 260 basis points over two years on operating leverage. Free cash flow was 130% of net income in FY2025 [F, Item 7], and the company holds $180M of net cash, so the balance sheet is not a constraint. GAAP and adjusted operating margins differ by about 3 points because of stock-based compensation, which we treat as a real cost.
+Revenue growth has held near 8-9% while operating margin expanded 260 basis points over two years on operating leverage. Free cash flow was 130% of net income in FY2025, and the company holds $180M of net cash, so the balance sheet is not a constraint. GAAP and adjusted operating margins differ by about 3 points because of stock-based compensation, which we treat as a real cost.
 
 | Metric | FY2023 | FY2024 | FY2025 |
 |--------|--------|--------|--------|
@@ -94,9 +94,9 @@ Price in each case is next-fiscal-year (FY2026E) EPS multiplied by the P/E multi
 
 | Rank | Risk | Why it matters | Level |
 |------|------|----------------|-------|
-| 1 | Auto end-market cyclicality | 31% of revenue comes from auto suppliers [F, Item 1] | High |
+| 1 | Auto end-market cyclicality | 31% of revenue comes from auto suppliers | High |
 | 2 | Rival bundling | Larger vendors give away similar features | High |
-| 3 | Patent suit | Pending claim could carry material damages [F, Item 3] | Medium |
+| 3 | Patent suit | Pending claim could carry material damages | Medium |
 | 4 | Multiple compression | Premium valuation leaves little margin for error | Medium |
 | 5 | Key-person dependence | Long-tenured CEO with no named successor | Low |
 

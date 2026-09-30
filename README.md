@@ -20,7 +20,7 @@ Give it a company and it does what an equity analyst would: it reads the filing,
 
 ## How to read a memo
 
-- Claims from the filing are tagged **[F]**, and claims from web research are tagged **[W]** with source and date. Untagged statements are the analyst's own judgment, so you can tell what the company says from what independent sources say.
+- Sources are named in plain prose, and the filing (10-K, 10-Q, or 20-F) is mentioned only where it matters. Every source is listed in the Sources and Methodology appendix.
 - Every calculated figure shows its inputs, and market data carries its as-of date.
 - The bear case is required, and anything missing is flagged rather than invented.
 
@@ -93,7 +93,7 @@ annual-report-analyzer/
         │   ├── filing-guide.md      # Where to look in a 10-K / 10-Q, red flags, EDGAR tips
         │   ├── financial-metrics.md # Metric definitions and sector adjustments
         │   ├── rating-framework.md  # How Buy / Hold / Sell is decided
-        │   └── memo-structure.md    # Section guide, source labels, markdown syntax
+        │   └── memo-structure.md    # Section guide, sourcing, markdown syntax
         ├── scripts/
         │   └── build_memo_pdf.py    # Renders the memo Markdown to a consistent PDF
         └── examples/
@@ -105,7 +105,7 @@ annual-report-analyzer/
 - **Rating logic:** edit `references/rating-framework.md`.
 - **Sections or tone:** edit `references/memo-structure.md` and the workflow in `SKILL.md`.
 - **Look and feel of the PDF:** change the palette at the top of `scripts/build_memo_pdf.py`.
-- **Filing-only mode:** to ground the memo strictly in the filing, delete step 5 in `SKILL.md` and the `[W]` label convention.
+- **Filing-only mode:** to ground the memo strictly in the filing, delete step 5 in `SKILL.md`.
 
 ## Limitations
 

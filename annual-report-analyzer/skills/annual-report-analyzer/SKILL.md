@@ -21,7 +21,7 @@ A message starting with `/analyze-stock` means run this whole skill. Strip the p
 
 ## Workflow
 
-Work through these stages in order. Do not skip the intake or the source labeling, since those are what make the memo auditable.
+Work through these stages in order. Do not skip the intake or the sourcing, since those are what make the memo auditable.
 
 ### 1. Intake
 
@@ -110,7 +110,7 @@ Writing standards:
 
 - **Lead with the answer.** The first paragraph states the rating, the thesis, and the two or three facts that drive it.
 - **Prose over bullets.** Write connected analysis, explaining why numbers matter rather than listing them. Use tables for financial data and comparisons, where they genuinely help.
-- **Label the source of every material claim.** Use `[F]` for facts taken from the filing (with the item or page where practical) and `[W]` for facts from web research (with source name and date). Unlabeled statements are read as the analyst's own judgment. This convention is what lets a reader separate the company's claims from independent evidence.
+- **Attribute sources in plain prose.** Do not use bracketed tags. Name the filing (10-K, 10-Q, or 20-F) only where it matters, such as when management's claim differs from independent evidence, and name outside sources naturally (for example, "according to Reuters"). List every source in the Sources and Methodology appendix.
 - **Be specific and quantified.** "Operating margin fell from 24% to 21% as freight costs rose" beats "margins came under pressure."
 - **Be balanced.** Give the bear case real weight in the Risks section, the scenarios, and the rating logic.
 - **Keep the numbers consistent.** Scenario probabilities sum to 100%, each price is forward EPS times P/E, the target is the probability-weighted price, and the price, market cap, and target on page 1 match the body.
