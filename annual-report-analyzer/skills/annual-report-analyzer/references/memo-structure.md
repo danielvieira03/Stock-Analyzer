@@ -38,7 +38,7 @@ confidence: Medium
 Section headings are numbered automatically. Write them without numbers. Section 1 sits alone on page 1 with the header band, so keep it to one page.
 
 ### 1. Executive Summary
-A one-page snapshot. State the rating, the thesis in two or three sentences, the three to five facts that drive it, the main risk, and the probability-weighted price target versus the current price. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear in the stat tiles, so do not repeat them in a table.
+A one-page snapshot. Do not open with the rating. The first paragraph gives the thesis in two or three sentences and the facts that drive it, and ends by stating the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Then cover the three to five driving facts, the main risk, and the probability-weighted price target versus the current price. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear in the stat tiles, so do not repeat them in a table.
 
 ### 2. Company Overview
 What the company does, how it makes money, revenue by segment and geography, key products, customers, scale (revenue, employees, market cap), and any recent strategic changes. A segment table is usually worth including.
@@ -52,23 +52,27 @@ Does the company have a durable edge, and is it widening or narrowing? Assess th
 ### 5. Management
 Who runs the company, tenure and background, track record against past targets, capital allocation decisions, compensation alignment with shareholders, insider ownership and transactions, and governance (board independence, dual-class shares, related-party dealings). Be candid about strengths and concerns.
 
+Give each of three leaders a `###` subsection, in this order: `### Chief Executive Officer`, `### Chairman`, `### Chief Financial Officer`. In each, name the person and cover tenure and background, track record, pay and ownership alignment, and any concerns. If one person holds two roles (for example CEO and Chairman), say so in both subsections rather than repeating the content, and if a role is vacant or interim, say that. Cover the board and governance in a short paragraph before the subsections.
+
 ### 6. Financial Analysis
 The core numbers with interpretation. Include a multi-year table (revenue, growth, margins, net income, EPS, FCF, net debt, key ratios), then discuss growth, profitability, cash generation, balance sheet strength, and capital allocation. Note accounting quality issues or non-GAAP adjustments. Valuation multiples versus peers belong in Peer Analysis.
 
 ### 7. Recommendation
-State the rating and the reasoning through the four questions (quality, trajectory, price, risk). Then a compact table with one row per case: **Bull**, **Base**, **Bear**, with columns for probability, price-target range, and the key assumption. The full build is in Section 8; do not repeat its numbers beyond this table. Under a `### What would change our view` subheading, list two or three observable triggers for a more positive view and for a more negative view. End with the confidence level and its main reason.
+State the rating in one or two sentences. Then answer the four questions as separate subsections, each with its own `###` subtitle and not as one paragraph: `### Is it a quality business?`, `### Is the trajectory improving?`, `### Is the price attractive?`, `### What is the risk?`. In each, give the answer first, then the reasoning and evidence behind it. Then a compact table with one row per case: **Bull**, **Base**, **Bear**, with columns for probability, price-target range, and the key assumption. The full build is in Section 8; do not repeat its numbers beyond this table. Under a `### What would change our view` subheading, list two or three observable triggers for a more positive view and for a more negative view. End with the confidence level and its main reason.
 
 ### 8. Scenario Analysis
 One table with a row per case (Bull, Base, Bear) and columns for probability, revenue growth, EPS growth, forward EPS, P/E multiple, and price. Growth targets are next-fiscal-year figures. Price = forward EPS x P/E. Add a final row starting with `Weighted` that shows the probability-weighted values. Probabilities must sum to 100% and the weighted price must equal the sum of probability x price; show that arithmetic in one sentence above the table. The weighted price is the price target.
 
+After the table, add three subsections, `### Bull case`, `### Base case`, and `### Bear case`. Each explains the assumptions behind that case and how they support the thesis: what drives revenue growth, what happens to margins and EPS, why that P/E multiple is justified, and what has to be true in the business or the market for the case to play out. Write two to three paragraphs per case, tied to the filing and the research, so a reader can judge whether the assumptions are reasonable. The summary table in the Recommendation section stays short; the depth lives here.
+
 ### 9. Risks and Catalysts
-Two ranked tables under `### Top Risks` and `### Top Catalysts` subheadings, each with columns Rank, the item, Why it matters, and a level label (`Level` for risks, `Importance` for catalysts). Levels are exactly `High`, `Medium`, or `Low`, and the builder colors them (for risks High is red; for catalysts High is green). Up to five each, ranked most important first. If fewer than five well-supported items exist, list only those and say so in one sentence. Do not pad. For each risk, say how it would show up in the financials. Include the strongest bear-case argument.
+Two ranked tables under `### Top Risks` and `### Top Catalysts` subheadings, each with columns Rank, the item, Why it matters, and a level label (`Level` for risks, `Importance` for catalysts). Levels are exactly `High`, `Medium`, or `Low`, and the builder colors them (for risks High is red; for catalysts High is green). Up to five each, ranked most important first. If fewer than five well-supported items exist, list only those and say so in one sentence. Do not pad. The "Why it matters" cell must be forward-looking, not just a description of what has already happened or is unfolding: explain why the item still matters to the future earnings or valuation, and how it could materialize (the trigger, the mechanism, and where it would show up in the financials or the share price). Keep the cell to two or three sentences. If a risk or catalyst needs more room, follow the table with a short paragraph under it. Include the strongest bear-case argument.
 
 ### 10. Wall Street Perspectives
 A table of price targets from major banks and brokers found in dated public sources: Firm, Date, Rating, Price target, and a Reason limited to one sentence. Add a final `Consensus` row with the rating split and the mean target. Include only targets you actually found; never invent or estimate a target. If a source is paywalled or unavailable, say so.
 
 ### 11. Peer Analysis
-A ratios-only table of the company against its three to five main competitors, with columns: P/E, EV/EBITDA, Operating margin, Net margin, FCF margin, Market cap, Revenue growth y/y. Put the subject company first and end with a `Peer median` row. State the as-of date and use consistent definitions across companies (trailing or forward, stated once).
+A ratios-only table of the company against its three to five main competitors, with columns: P/E, EV/EBITDA, Operating margin, Net margin, FCF margin, Market cap, Revenue growth y/y. Put the subject company first and end with a `Peer median` row. State the as-of date and use consistent definitions across companies (trailing or forward, stated once). After the table, add a short takeaway (two or three sentences) saying where the company sits against the peer median, whether the premium or discount looks justified, and what that implies for the rating. A `> Takeaway:` callout works well.
 
 ### 12. Investment Conclusion
 One short paragraph: the final take, the rating and target, and the single most important thing to watch.
@@ -142,13 +146,33 @@ confidence:
 
 ## Management
 
+### Chief Executive Officer
+
+### Chairman
+
+### Chief Financial Officer
+
 ## Financial Analysis
 
 ## Recommendation
 
+### Is it a quality business?
+
+### Is the trajectory improving?
+
+### Is the price attractive?
+
+### What is the risk?
+
 ### What would change our view
 
 ## Scenario Analysis
+
+### Bull case
+
+### Base case
+
+### Bear case
 
 ## Risks and Catalysts
 

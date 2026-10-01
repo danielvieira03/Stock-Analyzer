@@ -8,6 +8,13 @@ Read this when working through a 10-K or 10-Q. The goal is to find what changes 
 - Red flags worth pausing on
 - Finding filings on EDGAR
 
+## Completeness checklist
+
+Before research or rating work, confirm each of these was read. If one is missing, retry via another EDGAR URL or the company's IR site; if still missing, stop and ask the user to upload the filing.
+
+- **10-K**: Items 1, 1A, 1B, 1C, 2, 3, 5, 7, 7A, 8 (with notes), 9A.
+- **10-Q**: Part I Item 1 (financial statements and notes), Item 2 (MD&A), Item 3 (market risk), Item 4 (controls and procedures); Part II Item 1 (legal proceedings), Item 1A (risk factor updates), Item 2 (buybacks), and Items 3-6.
+
 ## 10-K item map
 
 | Item | What it contains | What to extract |
@@ -69,4 +76,4 @@ These do not mean "Sell" by themselves. They mean investigate before trusting th
 - Filing index for a company is reachable by ticker or CIK on the EDGAR search page
 - Look for form type `10-K` (annual), `10-Q` (quarterly), `DEF 14A` (proxy statement), `8-K` (current events, including earnings releases)
 - Foreign private issuers file `20-F` instead of a 10-K; handle similarly and note the form type in the memo
-- Automated requests to sec.gov should identify themselves with a descriptive User-Agent; if fetching directly fails, ask the user to upload the filing
+- Automated requests to sec.gov should identify themselves with a descriptive User-Agent; if fetching directly fails, or any section comes back incomplete, ask the user to upload the filing

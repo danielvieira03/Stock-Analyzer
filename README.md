@@ -12,7 +12,7 @@ Give it a company and it does what an equity analyst would: it reads the filing,
 
 1. **Intake:** company, filing type (latest 10-K by default, or a 10-Q) and an optional angle such as value or income.
 2. **Get the filing:** use your upload, or find the latest 10-K or 10-Q on SEC EDGAR and confirm the fiscal period. If it can't be retrieved, it asks you to upload it rather than writing from memory.
-3. **Read it deliberately:** business, specific (not boilerplate) risk factors, MD&A, financial statements and notes, legal proceedings and controls.
+3. **Check it's complete, then read it deliberately:** before any research, it confirms every required section was read, including legal proceedings and controls. If one can't be read, it retries another source and then asks you to upload the 10-Q or 10-K instead of continuing. It then reads the business, specific (not boilerplate) risk factors, MD&A, financial statements and notes.
 4. **Compute the financials:** growth, margins, free cash flow, debt and coverage, and capital allocation, with the inputs shown so you can check the math.
 5. **Research outside the filing:** current price and multiples, news since the filing, competitors, management and insider activity, and the strongest bull and bear arguments.
 6. **Form the view:** the rating comes from four questions (quality, trajectory, price, risk), not from the company's story. A great business isn't a Buy at any price, and a beaten-down one isn't a Buy just because it fell.
@@ -55,17 +55,17 @@ The PDF step needs Python with `reportlab` (`pip install reportlab`). Without it
 
 Twelve sections, always in the same order, plus a sources appendix:
 
-1. **Executive Summary:** a one-page snapshot with the rating, price, market cap, target and headline figures.
+1. **Executive Summary:** a one-page snapshot with price, market cap, target and headline figures; the rating comes at the end of the first paragraph as the conclusion.
 2. **Company Overview**
 3. **Industry Analysis**
 4. **Competitive Advantage**
-5. **Management**
+5. **Management:** separate subsections for the CEO, Chairman and CFO.
 6. **Financial Analysis**
-7. **Recommendation:** Buy / Hold / Sell, with bull, base and bear probabilities and price-target ranges, and what would change the view.
-8. **Scenario Analysis:** per case, the probability, growth, forward EPS, P/E and price, plus the probability-weighted price target.
-9. **Risks and Catalysts:** the top five of each, ranked and labeled High / Medium / Low (only those found).
+7. **Recommendation:** Buy / Hold / Sell, with each of the four questions (quality, trajectory, price, risk) as its own subtitle with reasoning, bull, base and bear probabilities and price-target ranges, and what would change the view.
+8. **Scenario Analysis:** per case, the probability, growth, forward EPS, P/E and price, plus the probability-weighted price target, and a subsection per case explaining the assumptions behind it.
+9. **Risks and Catalysts:** the top five of each, ranked and labeled High / Medium / Low (only those found), each explaining why it still matters and how it could materialize.
 10. **Wall Street Perspectives:** big-bank price targets with a one-sentence reason each.
-11. **Peer Analysis:** ratios only (P/E, EV/EBITDA, margins, market cap, revenue growth) against the main competitors.
+11. **Peer Analysis:** ratios (P/E, EV/EBITDA, margins, market cap, revenue growth) against the main competitors, with a short takeaway.
 12. **Investment Conclusion**
 
 Sources and Methodology closes the report as an appendix.

@@ -22,7 +22,7 @@ The percentages are guides, not mechanical rules. Explain any departure.
 
 ## The four questions
 
-Answer each explicitly before choosing a rating.
+Answer each explicitly before choosing a rating. In the memo, each question gets its own subtitle in the Recommendation section, with the answer first and then the reasoning.
 
 1. **Quality**: Is this a good business? Look at returns on capital, margin stability, competitive position, and cash generation.
 2. **Trajectory**: Is it getting better or worse? Look at growth, margin direction, market share, and management's execution against past promises.

@@ -41,7 +41,16 @@ Ask at most one short question if something essential is missing. Otherwise proc
 
 Note the filing date, fiscal period end, and form type. They go on the cover of the memo.
 
-### 3. Read the filing deliberately
+### 3. Check the filing is complete, then read it deliberately
+
+**Completeness gate.** Before any outside research, valuation, or rating work, confirm you actually read every required section of the filing. The checklist is in `references/filing-guide.md` (10-K items, or 10-Q Parts I and II). Legal Proceedings and Controls and Procedures count; they are not optional.
+
+If any section is missing, truncated, or unreadable:
+
+1. Retry first: another EDGAR URL form (the filing index, the full-submission text, the other document files), then the company's investor relations site.
+2. If it is still missing, stop and tell the user which sections could not be read, and ask them to upload the 10-Q or 10-K (whichever is being analyzed). Do not start research or form a view until you have it.
+
+The memo must never say that a filing section was not reviewed. It is either complete or the work pauses.
 
 Read for what matters to an investor. Section guides are in `references/filing-guide.md`; the short version:
 
@@ -91,24 +100,24 @@ Before writing, state to yourself the thesis in two sentences and the single mos
 
 Use the structure in `references/memo-structure.md`. The sections, in order:
 
-1. Executive Summary (one-page snapshot with the rating up front)
+1. Executive Summary (one-page snapshot; the rating comes at the end of the first paragraph)
 2. Company Overview
 3. Industry Analysis
 4. Competitive Advantage
-5. Management
+5. Management (subsections for the CEO, Chairman, and CFO)
 6. Financial Analysis
-7. Recommendation (Buy / Hold / Sell, with bull, base, and bear summarized)
-8. Scenario Analysis (probabilities, growth, EPS, P/E, and the probability-weighted price)
-9. Risks and Catalysts (top five each, ranked, labeled High / Medium / Low)
+7. Recommendation (Buy / Hold / Sell, one subtitle per question, with bull, base, and bear summarized)
+8. Scenario Analysis (the weighted table, plus a subsection explaining the assumptions behind each case)
+9. Risks and Catalysts (top five each, ranked, labeled High / Medium / Low, with why each still matters and how it could materialize)
 10. Wall Street Perspectives
-11. Peer Analysis (ratios only)
+11. Peer Analysis (ratios table, plus a short takeaway)
 12. Investment Conclusion
 
 Sources and Methodology follows as an appendix. `references/memo-structure.md` says what each section must contain and how the tables are laid out.
 
 Writing standards:
 
-- **Lead with the answer.** The first paragraph states the rating, the thesis, and the two or three facts that drive it.
+- **Build to the answer.** The first paragraph states the thesis and the two or three facts that drive it, then closes with the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Do not open with the rating.
 - **Prose over bullets.** Write connected analysis, explaining why numbers matter rather than listing them. Use tables for financial data and comparisons, where they genuinely help.
 - **Attribute sources in plain prose.** Do not use bracketed tags. Name the filing (10-K, 10-Q, or 20-F) only where it matters, such as when management's claim differs from independent evidence, and name outside sources naturally (for example, "according to Reuters"). List every source in the Sources and Methodology appendix.
 - **Be specific and quantified.** "Operating margin fell from 24% to 21% as freight costs rose" beats "margins came under pressure."
@@ -131,7 +140,7 @@ Finish by giving the user the file and a two-to-three sentence summary of the ra
 ## Guardrails
 
 - **Not personalized advice.** The memo is analysis for informational purposes. Include the standard disclaimer from `references/memo-structure.md` on the last page, and do not tailor the rating to the user's personal financial situation.
-- **Never fabricate.** If a number, quote, or fact was not found, leave it out or flag it as unavailable. A shorter accurate memo beats a complete-looking one with invented details.
+- **Never fabricate.** If an outside number, quote, or fact was not found, leave it out or flag it as unavailable. This does not apply to filing sections: those must all be read (see the completeness gate in stage 3). A shorter accurate memo beats a complete-looking one with invented details.
 - **Separate what management says from what is true.** Filings are advocacy documents. Where management's narrative and the numbers diverge, point it out.
 - **Stay current.** Use today's date for market data and state it in the memo. Do not rely on remembered prices or multiples.
 - **One company per memo.** If asked to compare companies, produce a memo for each and add a short comparison, rather than blending them.
