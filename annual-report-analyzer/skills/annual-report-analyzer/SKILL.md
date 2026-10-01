@@ -1,6 +1,6 @@
 ---
 name: annual-report-analyzer
-description: Analyze a public company's 10-K or 10-Q, add current outside research, and produce an investment memo with a Buy / Hold / Sell rating as a formatted PDF. Use whenever the user asks to analyze, review, summarize, or "write up" a 10-K, 10-Q, annual report, or SEC filing, asks for an investment memo, equity research note, stock pitch, or buy/hold/sell call on a public company, or uploads a filing and wants to know if the stock is worth owning, even without saying "memo". Always trigger on messages starting with "/analyze-stock", treating the rest as the company, ticker, or filing (e.g. "/analyze-stock NVDA 10-Q").
+description: Analyze a public company's 10-K or 10-Q, add current outside research, and produce an investment memo with a Buy / Hold / Sell rating as a formatted PDF. Use ONLY when the user explicitly runs the "/analyze-stock" command, treating the rest of the message as the company, ticker, or filing (e.g. "/analyze-stock NVDA 10-Q"). Do not trigger from keywords or general requests such as analyzing a filing, writing a memo, or asking for a buy/hold/sell call; those do not activate this skill.
 ---
 
 # Annual Report Analyzer
@@ -17,7 +17,7 @@ The memo is only useful if the reader can trust it. Every number should trace to
 
 ## The /analyze-stock shorthand
 
-A message starting with `/analyze-stock` means run this whole skill. Strip the prefix and treat the rest as the intake answer (company or ticker, optionally a filing type or upload). If nothing follows it, ask which company. Don't explain the mechanism back to the user.
+This skill runs only when the user invokes `/analyze-stock`. Do not start it because a message mentions a filing, a memo, or a buy/hold/sell call. A message starting with `/analyze-stock` means run this whole skill. Strip the prefix and treat the rest as the intake answer (company or ticker, optionally a filing type or upload). If nothing follows it, ask which company. Don't explain the mechanism back to the user.
 
 ## Workflow
 
