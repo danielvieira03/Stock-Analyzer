@@ -25,13 +25,15 @@ Work through these stages in order. Do not skip the intake or the sourcing, sinc
 
 ### 1. Intake
 
-Establish three things. If the user already gave them, do not ask again.
+Establish these. If the user already gave them, do not ask again.
 
 - **Company**: name or ticker.
 - **Filing**: the latest 10-K by default; a 10-Q if the user asks for it or if the 10-Q is more recent and they want an update. If they uploaded a file, use it and confirm the company, form type, and period covered.
 - **Angle** (optional): a holding period or lens such as "long-term compounder", "value", or "income". Default to a 12-month view for a generalist investor.
 
-Ask at most one short question if something essential is missing. Otherwise proceed.
+- **Firm**: the firm name shown on the cover banner (`firm` in the metadata). Ask for it every run unless the user already gave it, for example in the command or earlier in the conversation. Never invent one or use a real bank's name.
+
+Ask at most one short question if something essential is missing (combine company and firm if both are missing). Otherwise proceed.
 
 ### 2. Get the filing
 

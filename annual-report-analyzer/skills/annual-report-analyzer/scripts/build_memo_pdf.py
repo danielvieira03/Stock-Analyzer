@@ -342,7 +342,7 @@ def split_note(value):
 
 
 def build_tile_row(fields, drop_empty=False):
-    """Row of label/value tiles. Empty fields are dropped, or shown as a dash."""
+    """Row of label/value tiles. Empty fields show a dash, or are dropped if drop_empty."""
     cells = []
     for label, raw in fields:
         if drop_empty and not raw:
@@ -373,24 +373,25 @@ def build_tile_row(fields, drop_empty=False):
 
 
 def build_tiles(meta):
-    """Standard stat tiles, used when no valuation-strip fields are provided."""
-    target = meta.get("price_target") or meta.get("value_range", "")
-    target_label = "PRICE TARGET" if meta.get("price_target") else "VALUE RANGE"
-    return build_tile_row([
-        ("PRICE", meta.get("price", "")),
-        ("MARKET CAP", meta.get("market_cap", "")),
-        (target_label, target),
-        ("UPSIDE / DOWNSIDE", meta.get("upside", "")),
-        ("HORIZON", meta.get("horizon", "")),
-        ("CONFIDENCE", meta.get("confidence", "")),
-    ], drop_empty=True)
+    """Standard stat tiles, used when no valuation-strip fields are provided.
+
+    When a price target is given, the rating box carries the target and upside,
+    so the tiles leave them out to avoid showing the same numbers twice.
+    """
+    fields = [("PRICE", meta.get("price", "")), ("MARKET CAP", meta.get("market_cap", ""))]
+    if not meta.get("price_target"):
+        fields += [("VALUE RANGE", meta.get("value_range", "")),
+                   ("UPSIDE / DOWNSIDE", meta.get("upside", ""))]
+    fields += [("HORIZON", meta.get("horizon", "")),
+               ("CONFIDENCE", meta.get("confidence", ""))]
+    return build_tile_row(fields)
 
 
 STRIP_KEYS = ("week_range", "ntm_pe", "ev_ebitda", "from_ath")
 
 
 def build_valuation_strip(meta):
-    """Valuation strip; a field that is not provided is left out, not shown as a dash."""
+    """Valuation strip. A missing value shows a dash (a company with negative earnings has no P/E)."""
     return build_tile_row([
         ("CURRENT PRICE", meta.get("price", "")),
         ("52-WEEK RANGE", meta.get("week_range", "")),
@@ -398,7 +399,7 @@ def build_valuation_strip(meta):
         ("NTM P/E", meta.get("ntm_pe", "")),
         ("EV/EBITDA", meta.get("ev_ebitda", "")),
         ("FROM ATH", meta.get("from_ath", "")),
-    ], drop_empty=True)
+    ])
 
 
 class Pills(Flowable):
@@ -772,6 +773,9 @@ def main():
         lines = f.read().splitlines()
 
     meta, body_lines = parse_metadata(lines)
+    if not meta.get("firm"):
+        print("Warning: no 'firm' in the metadata; the cover banner will have no firm name.",
+              file=sys.stderr)
     company = meta.get("company", "Company")
     for key in CTX_KEYS:
         PAGE_CTX[key] = meta.get(key, "").strip()

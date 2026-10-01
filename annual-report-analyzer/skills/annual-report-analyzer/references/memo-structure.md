@@ -35,11 +35,11 @@ confidence: Medium
 
 ### Optional cover fields
 
-These add parts to the page-1 cover. Every one is optional. Include a field only when you have a real, sourced value for it. Never invent or estimate a value to fill a slot, and never use a placeholder: a missing field simply removes its slot from the cover.
+These add parts to the page-1 cover. Every one is optional. Include a field only when you have a real, sourced value for it. Never invent or estimate a value to fill a slot, and never use a placeholder: a missing optional field removes its slot from the cover, except in the stat tiles and the valuation strip, where a missing value shows a dash under its label (for example, no P/E for a company with negative earnings).
 
 | Key | What it unlocks |
 |-----|-----------------|
-| `firm` | Firm name, top left of the banner. Supply only what the user gave you; never default to a real bank or brokerage. |
+| `firm` | Firm name, top left of the banner. Every report should have one: ask the user for it at intake unless they already gave it. Use only what the user gives you; never default to a real bank or brokerage, and the builder shows no fallback text if it is missing. |
 | `audience_note` | Line under the firm name (for example, who the report is for). |
 | `coverage` | Coverage area, under the audience note in the banner and in the bottom info row. |
 | `report_type` | Under the date, top right of the banner (for example, "Initiation of coverage"). |
@@ -57,7 +57,7 @@ These add parts to the page-1 cover. Every one is optional. Include a field only
 | `next_earnings` | Next Earnings date, in the info row. |
 | `fy_revenue`, `fy_margin`, `fy_eps` | FY revenue, margin and EPS estimates, in the info row. |
 
-The valuation strip (Current Price, 52-Week Range, Market Cap, NTM P/E, EV/EBITDA, From ATH) appears when at least one of `week_range`, `ntm_pe`, `ev_ebitda`, or `from_ath` is given; any of its six cells without data is left out. If none of those four is given, the standard six tiles show instead (price, market cap, target or value range, upside, horizon, confidence). The info row appears when at least one of `analyst`, `coverage`, `fy_revenue`, `fy_margin`, `fy_eps`, or `next_earnings` is given.
+The valuation strip (Current Price, 52-Week Range, Market Cap, NTM P/E, EV/EBITDA, From ATH) appears when at least one of `week_range`, `ntm_pe`, `ev_ebitda`, or `from_ath` is given; any of its six cells without data shows a dash. If none of those four is given, the standard six tiles show instead (price, market cap, value range, upside, horizon, confidence; when `price_target` is given, the rating box carries the target and upside, so the tiles leave them out). The info row appears when at least one of `analyst`, `coverage`, `fy_revenue`, `fy_margin`, `fy_eps`, or `next_earnings` is given.
 
 ## Section-by-section guide
 
