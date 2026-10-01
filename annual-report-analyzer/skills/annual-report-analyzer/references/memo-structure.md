@@ -33,6 +33,32 @@ confidence: Medium
 
 `rating` must be exactly `Buy`, `Hold`, or `Sell`. The builder colors the rating badge accordingly. `date` is the report date. `price` includes its as-of date in parentheses; text in parentheses is shown as a small note under the value. `price_target` is the probability-weighted price from the Scenario Analysis. `upside` is target versus price, with a sign (`+12.4%` or `-6.0%`). `value_range` is the bear-to-bull span and is shown only if `price_target` is missing. Any missing key shows a dash.
 
+### Optional cover fields
+
+These add parts to the page-1 cover. Every one is optional. Include a field only when you have a real, sourced value for it. Never invent or estimate a value to fill a slot, and never use a placeholder: a missing field simply removes its slot from the cover.
+
+| Key | What it unlocks |
+|-----|-----------------|
+| `firm` | Firm name, top left of the banner. Supply only what the user gave you; never default to a real bank or brokerage. |
+| `audience_note` | Line under the firm name (for example, who the report is for). |
+| `coverage` | Coverage area, under the audience note in the banner and in the bottom info row. |
+| `report_type` | Under the date, top right of the banner (for example, "Initiation of coverage"). |
+| `sector` | Text label beside the rating and ticker pills. |
+| `tagline` | One italic line under the company name. |
+| `week_range` | 52-Week Range in the valuation strip. |
+| `ntm_pe` | NTM P/E in the valuation strip. |
+| `ev_ebitda` | EV/EBITDA in the valuation strip. |
+| `from_ath` | From ATH (change from the all-time high, with sign) in the valuation strip. |
+| `market_cap`, `price` | Market Cap and Current Price in the valuation strip (already part of the core block). |
+| `price_target` | Shows the rating callout box (rating, Price Target, Upside/Downside, Conviction). Without it, no box is drawn. |
+| `upside` | Upside/Downside cell of the callout (already part of the core block). |
+| `conviction` | Conviction cell of the callout. If absent, `confidence` is used. |
+| `analyst` | Analyst, in the bottom info row. Use only a name the user supplied. |
+| `next_earnings` | Next Earnings date, in the info row. |
+| `fy_revenue`, `fy_margin`, `fy_eps` | FY revenue, margin and EPS estimates, in the info row. |
+
+The valuation strip (Current Price, 52-Week Range, Market Cap, NTM P/E, EV/EBITDA, From ATH) appears when at least one of `week_range`, `ntm_pe`, `ev_ebitda`, or `from_ath` is given; any of its six cells without data is left out. If none of those four is given, the standard six tiles show instead (price, market cap, target or value range, upside, horizon, confidence). The info row appears when at least one of `analyst`, `coverage`, `fy_revenue`, `fy_margin`, `fy_eps`, or `next_earnings` is given.
+
 ## Section-by-section guide
 
 Section headings are numbered automatically. Write them without numbers. Section 1 sits alone on page 1 with the header band, so keep it to one page.
@@ -134,6 +160,9 @@ upside:
 value_range: 
 horizon: 12 months
 confidence: 
+# Optional cover fields, add only with real data: firm, audience_note, coverage,
+# report_type, sector, tagline, week_range, ntm_pe, ev_ebitda, from_ath, conviction,
+# analyst, next_earnings, fy_revenue, fy_margin, fy_eps
 ---
 
 ## Executive Summary

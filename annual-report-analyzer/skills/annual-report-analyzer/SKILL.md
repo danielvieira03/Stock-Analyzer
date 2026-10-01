@@ -142,6 +142,8 @@ Write the memo as Markdown following the syntax notes in `references/memo-struct
 python scripts/build_memo_pdf.py memo.md "<Company>_Investment_Memo.pdf"
 ```
 
+Fill the optional cover fields in the memo's metadata block (listed in `references/memo-structure.md`) whenever the filing or your research gives you a real value: sector, 52-week range, NTM P/E, EV/EBITDA, distance from the all-time high, next earnings date, and FY estimates. Leave out any field you do not actually have, and never invent a value (or a firm or analyst name) just to unlock the richer cover layout.
+
 The script needs `reportlab` (`pip install reportlab`). It gives every memo the same professional layout: a header band with the rating badge, stat tiles (price, market cap, target, upside), numbered section headings, styled tables with colored labels, and page headers and footers. If Python or file creation is unavailable in the current environment, deliver the memo as Markdown in the chat and mention that the PDF step needs a code-execution environment.
 
 Finish by giving the user the file and a two-to-three sentence summary of the rating and why. Do not repeat the whole memo in chat.

@@ -21,6 +21,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen import canvas as rl_canvas
 from reportlab.platypus import (
+    Flowable,
     HRFlowable,
     KeepTogether,
     PageBreak,
@@ -53,7 +54,7 @@ ITALIC_FONT = "Helvetica-Oblique"
 PAGE_W, PAGE_H = letter
 MARGIN = 0.75 * inch
 CONTENT_W = PAGE_W - 2 * MARGIN
-BAND_H = 1.55 * inch  # height of the navy header band on page 1
+BAND_H = 0.95 * inch  # height of the navy header band on page 1
 
 # Built-in PDF fonts lack these glyphs; map them to plain-text equivalents.
 GLYPH_MAP = {
@@ -110,6 +111,30 @@ styles = {
         "tile_note", fontName=BASE_FONT, fontSize=6.5, leading=8.2,
         textColor=MUTED,
     ),
+    "cover_name": ParagraphStyle(
+        "cover_name", fontName=BOLD_FONT, fontSize=24, leading=28,
+        textColor=NAVY,
+    ),
+    "cover_tagline": ParagraphStyle(
+        "cover_tagline", fontName=ITALIC_FONT, fontSize=10.5, leading=14,
+        textColor=MUTED, spaceBefore=2, leftIndent=-6,
+    ),
+    "box_label": ParagraphStyle(
+        "box_label", fontName=BOLD_FONT, fontSize=6.8, leading=9,
+        textColor=colors.HexColor("#C9D3E0"),
+    ),
+    "box_value": ParagraphStyle(
+        "box_value", fontName=BOLD_FONT, fontSize=13, leading=16,
+        textColor=colors.white,
+    ),
+    "box_rating": ParagraphStyle(
+        "box_rating", fontName=BOLD_FONT, fontSize=15, leading=18,
+        textColor=colors.white, alignment=1,
+    ),
+    "info_value": ParagraphStyle(
+        "info_value", fontName=BOLD_FONT, fontSize=8.6, leading=11,
+        textColor=INK,
+    ),
     "source_line": ParagraphStyle(
         "source_line", fontName=BASE_FONT, fontSize=7.8, leading=10.5,
         textColor=MUTED, spaceBefore=6, spaceAfter=4,
@@ -141,7 +166,7 @@ def parse_metadata(lines):
         for i in range(1, len(lines)):
             if lines[i].strip() == "---":
                 for raw in lines[1:i]:
-                    if ":" in raw:
+                    if ":" in raw and not raw.lstrip().startswith("#"):
                         k, v = raw.split(":", 1)
                         meta[k.strip().lower()] = v.strip()
                 return meta, lines[i + 1:]
@@ -316,22 +341,15 @@ def split_note(value):
     return (m.group(1), m.group(2)) if m else (value, "")
 
 
-def build_tiles(meta):
-    target = meta.get("price_target") or meta.get("value_range", "")
-    target_label = "PRICE TARGET" if meta.get("price_target") else "VALUE RANGE"
-    fields = [
-        ("PRICE", meta.get("price", "")),
-        ("MARKET CAP", meta.get("market_cap", "")),
-        (target_label, target),
-        ("UPSIDE / DOWNSIDE", meta.get("upside", "")),
-        ("HORIZON", meta.get("horizon", "")),
-        ("CONFIDENCE", meta.get("confidence", "")),
-    ]
+def build_tile_row(fields, drop_empty=False):
+    """Row of label/value tiles. Empty fields are dropped, or shown as a dash."""
     cells = []
     for label, raw in fields:
+        if drop_empty and not raw:
+            continue
         main, note = split_note(raw)
         value_style = styles["tile_value"]
-        if label.startswith("UPSIDE") and main:
+        if label.startswith(("UPSIDE", "FROM ATH")) and main:
             color = GOOD if main.startswith("+") else BAD if main.startswith("-") else NAVY
             value_style = ParagraphStyle("tv_up", parent=value_style, textColor=color)
         parts = [Paragraph(label, styles["tile_label"]),
@@ -354,14 +372,185 @@ def build_tiles(meta):
     return t
 
 
+def build_tiles(meta):
+    """Standard stat tiles, used when no valuation-strip fields are provided."""
+    target = meta.get("price_target") or meta.get("value_range", "")
+    target_label = "PRICE TARGET" if meta.get("price_target") else "VALUE RANGE"
+    return build_tile_row([
+        ("PRICE", meta.get("price", "")),
+        ("MARKET CAP", meta.get("market_cap", "")),
+        (target_label, target),
+        ("UPSIDE / DOWNSIDE", meta.get("upside", "")),
+        ("HORIZON", meta.get("horizon", "")),
+        ("CONFIDENCE", meta.get("confidence", "")),
+    ], drop_empty=True)
+
+
+STRIP_KEYS = ("week_range", "ntm_pe", "ev_ebitda", "from_ath")
+
+
+def build_valuation_strip(meta):
+    """Valuation strip; a field that is not provided is left out, not shown as a dash."""
+    return build_tile_row([
+        ("CURRENT PRICE", meta.get("price", "")),
+        ("52-WEEK RANGE", meta.get("week_range", "")),
+        ("MARKET CAP", meta.get("market_cap", "")),
+        ("NTM P/E", meta.get("ntm_pe", "")),
+        ("EV/EBITDA", meta.get("ev_ebitda", "")),
+        ("FROM ATH", meta.get("from_ath", "")),
+    ], drop_empty=True)
+
+
+class Pills(Flowable):
+    """Row of rounded pills followed by an optional plain-text label."""
+
+    H = 0.26 * inch
+    FONT_SIZE = 8.5
+    X0 = -6  # tables overhang the frame padding by 6pt; line up with them
+
+    def __init__(self, pills, label=""):
+        super().__init__()
+        self.pills, self.label = pills, label  # pills: [(text, fill color)]
+
+    def wrap(self, avail_w, avail_h):
+        return avail_w, self.H
+
+    def draw(self):
+        c, x = self.canv, self.X0
+        for text, fill in self.pills:
+            w = stringWidth(text, BOLD_FONT, self.FONT_SIZE) + 18
+            c.setFillColor(fill)
+            c.roundRect(x, 0, w, self.H, 4, stroke=0, fill=1)
+            c.setFillColor(colors.white)
+            c.setFont(BOLD_FONT, self.FONT_SIZE)
+            c.drawCentredString(x + w / 2, self.H / 2 - 3, text)
+            x += w + 8
+        if self.label:
+            c.setFillColor(MUTED)
+            c.setFont(BOLD_FONT, 8.5)
+            c.drawString(x + 2, self.H / 2 - 3, self.label.upper())
+
+
+def build_badges(meta):
+    rating = meta.get("rating", "").strip()
+    ticker = meta.get("ticker", "").strip()
+    sector = meta.get("sector", "").strip()
+    pills = []
+    if rating:
+        pills.append((rating.upper(), RATING_COLORS.get(rating.lower(), MUTED)))
+    if ticker:
+        pills.append((ticker.upper(), NAVY))
+    if not pills and not sector:
+        return None
+    return Pills(pills, sector)
+
+
+def build_name_block(meta):
+    company = meta.get("company", "Company")
+    ticker = meta.get("ticker", "").strip()
+    size = 26
+    while size > 14 and stringWidth(f"{company}   {ticker}", BOLD_FONT, size) > CONTENT_W:
+        size -= 1
+    text = f'<font size="{size}">{escape(company)}</font>'
+    if ticker:
+        muted = "#" + MUTED.hexval()[2:]
+        text += (f'&nbsp;&nbsp;<font size="{max(11, round(size * 0.55))}" '
+                 f'color="{muted}">{escape(ticker)}</font>')
+    style = ParagraphStyle("cover_name_fit", parent=styles["cover_name"],
+                           fontSize=size, leading=size + 4, leftIndent=-6)
+    flow = [Paragraph(text, style)]
+    if meta.get("tagline"):
+        flow.append(Paragraph(inline(meta["tagline"]), styles["cover_tagline"]))
+    return flow
+
+
+def build_rating_box(meta):
+    """Rating callout. Shown only when a price target is provided."""
+    target = meta.get("price_target", "").strip()
+    if not target:
+        return None
+    rating = meta.get("rating", "").strip()
+    conviction = meta.get("conviction") or meta.get("confidence", "")
+    fields = [("PRICE TARGET", target), ("UPSIDE / DOWNSIDE", meta.get("upside", "")),
+              ("CONVICTION", conviction)]
+    fields = [(label, value) for label, value in fields if value]
+
+    cells, widths = [], []
+    if rating:
+        cells.append(Paragraph(escape(rating.upper()), styles["box_rating"]))
+        widths.append(1.35 * inch)
+    rest = (CONTENT_W - sum(widths)) / len(fields)
+    for label, raw in fields:
+        main, note = split_note(raw)
+        parts = [Paragraph(label, styles["box_label"]),
+                 Paragraph(escape(main), styles["box_value"])]
+        if note:
+            parts.append(Paragraph(escape(note), styles["box_label"]))
+        cells.append(parts)
+        widths.append(rest)
+
+    t = Table([cells], colWidths=widths)
+    style = [
+        ("BACKGROUND", (0, 0), (-1, -1), ACCENT),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 12),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("TOPPADDING", (0, 0), (-1, -1), 9),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 9),
+    ]
+    if rating:
+        style += [("BACKGROUND", (0, 0), (0, 0), RATING_COLORS.get(rating.lower(), MUTED)),
+                  ("LEFTPADDING", (0, 0), (0, 0), 6), ("RIGHTPADDING", (0, 0), (0, 0), 6)]
+    t.setStyle(TableStyle(style))
+    return t
+
+
+def build_info_row(meta):
+    """Small row of extra facts at the bottom of the cover; only what is provided."""
+    pairs = [("ANALYST", meta.get("analyst", "")), ("COVERAGE", meta.get("coverage", "")),
+             ("FY REVENUE EST.", meta.get("fy_revenue", "")),
+             ("FY MARGIN EST.", meta.get("fy_margin", "")),
+             ("FY EPS EST.", meta.get("fy_eps", "")),
+             ("NEXT EARNINGS", meta.get("next_earnings", ""))]
+    pairs = [(label, value) for label, value in pairs if value]
+    if not pairs:
+        return None
+    cells = [[Paragraph(label, styles["tile_label"]),
+              Paragraph(inline(value), styles["info_value"])] for label, value in pairs]
+    t = Table([cells], colWidths=[CONTENT_W / len(cells)] * len(cells))
+    t.setStyle(TableStyle([
+        ("LINEABOVE", (0, 0), (-1, 0), 0.6, RULE),
+        ("LINEBELOW", (0, 0), (-1, 0), 0.6, RULE),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 2),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+        ("TOPPADDING", (0, 0), (-1, -1), 6),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+    ]))
+    return t
+
+
 def build_cover(meta):
-    flow = [Spacer(1, BAND_H - 0.85 * inch + 0.2 * inch), build_tiles(meta)]
+    flow = [Spacer(1, BAND_H - 0.85 * inch + 0.22 * inch)]
+    badges = build_badges(meta)
+    if badges:
+        flow += [badges, Spacer(1, 9)]
+    flow += build_name_block(meta)
+    flow.append(Spacer(1, 12))
+    has_strip = any(meta.get(k) for k in STRIP_KEYS)
+    flow.append(build_valuation_strip(meta) if has_strip else build_tiles(meta))
+    box = build_rating_box(meta)
+    if box:
+        flow += [Spacer(1, 8), box]
     filing = meta.get("filing", "")
     if filing:
         flow.append(Paragraph(f"<b>Source filing:</b> {inline(filing)}",
                               styles["source_line"]))
     else:
         flow.append(Spacer(1, 8))
+    info = build_info_row(meta)
+    if info:
+        flow += [info, Spacer(1, 4)]
     return flow
 
 
@@ -488,11 +677,13 @@ def parse_body(lines):
 
 
 # ---- Page furniture --------------------------------------------------------
-PAGE_CTX = {"company": "", "ticker": "", "rating": "", "date": ""}
+CTX_KEYS = ("company", "ticker", "rating", "date", "firm", "audience_note",
+            "coverage", "report_type")
+PAGE_CTX = {k: "" for k in CTX_KEYS}
 
 
 def draw_first_page(canv, doc):
-    """Navy header band with the company name and rating badge."""
+    """Navy header band: firm, audience and coverage on the left; date and report type on the right."""
     ctx = PAGE_CTX
     canv.saveState()
     top = PAGE_H - BAND_H
@@ -501,37 +692,25 @@ def draw_first_page(canv, doc):
     canv.setFillColor(GOLD)
     canv.rect(0, top - 3, PAGE_W, 3, stroke=0, fill=1)
 
-    canv.setFillColor(GOLD)
-    canv.setFont(BOLD_FONT, 8)
-    canv.drawString(MARGIN, PAGE_H - 0.55 * inch,
-                    "EQUITY RESEARCH   |   INVESTMENT REPORT")
+    soft = colors.HexColor("#C9D3E0")
+    y = PAGE_H - 0.42 * inch
+    for key, font, size, color in (("firm", BOLD_FONT, 9.5, GOLD),
+                                   ("audience_note", BASE_FONT, 8, soft),
+                                   ("coverage", BASE_FONT, 8, soft)):
+        if ctx[key]:
+            canv.setFillColor(color)
+            canv.setFont(font, size)
+            canv.drawString(MARGIN, y, ctx[key])
+            y -= 0.17 * inch
 
-    badge_w = 1.3 * inch
-    max_w = CONTENT_W - badge_w - 0.3 * inch
-    size = 26
-    while size > 14 and stringWidth(ctx["company"], BOLD_FONT, size) > max_w:
-        size -= 1
-    canv.setFillColor(colors.white)
-    canv.setFont(BOLD_FONT, size)
-    canv.drawString(MARGIN, PAGE_H - 1.02 * inch, ctx["company"])
-
-    sub = "  |  ".join(x for x in (ctx["ticker"], ctx["date"]) if x)
-    canv.setFillColor(colors.HexColor("#C9D3E0"))
-    canv.setFont(BASE_FONT, 9.5)
-    canv.drawString(MARGIN, PAGE_H - 1.3 * inch, sub)
-
-    rating = ctx["rating"]
-    badge_color = RATING_COLORS.get(rating.lower(), MUTED)
-    bx, by, bh = PAGE_W - MARGIN - badge_w, PAGE_H - 1.28 * inch, 0.5 * inch
-    canv.setFillColor(colors.HexColor("#C9D3E0"))
-    canv.setFont(BOLD_FONT, 6.8)
-    canv.drawString(bx, by + bh + 5, "RECOMMENDATION")
-    canv.setFillColor(badge_color)
-    canv.roundRect(bx, by, badge_w, bh, 3, stroke=0, fill=1)
-    canv.setFillColor(colors.white)
-    canv.setFont(BOLD_FONT, 16)
-    canv.drawCentredString(bx + badge_w / 2, by + bh / 2 - 5.5,
-                           (rating or "N/A").upper())
+    y = PAGE_H - 0.42 * inch
+    for key, font, size, color in (("date", BOLD_FONT, 9.5, colors.white),
+                                   ("report_type", BASE_FONT, 8, soft)):
+        if ctx[key]:
+            canv.setFillColor(color)
+            canv.setFont(font, size)
+            canv.drawRightString(PAGE_W - MARGIN, y, ctx[key])
+            y -= 0.17 * inch
     canv.restoreState()
 
 
@@ -594,11 +773,10 @@ def main():
 
     meta, body_lines = parse_metadata(lines)
     company = meta.get("company", "Company")
-    PAGE_CTX.update(
-        company=company, ticker=meta.get("ticker", ""),
-        rating=meta.get("rating", "").strip(), date=meta.get("date", ""),
-    )
-    for key in ("company", "ticker", "rating", "date"):
+    for key in CTX_KEYS:
+        PAGE_CTX[key] = meta.get(key, "").strip()
+    PAGE_CTX["company"] = company
+    for key in CTX_KEYS:
         PAGE_CTX[key] = re.sub(r"\s+", " ", PAGE_CTX[key])
         for src_g, dst_g in GLYPH_MAP.items():
             PAGE_CTX[key] = PAGE_CTX[key].replace(src_g, dst_g)
