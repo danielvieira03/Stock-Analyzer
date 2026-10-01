@@ -10,7 +10,7 @@ Read this when working through a 10-K or 10-Q. The goal is to find what changes 
 
 ## Completeness checklist
 
-Before research or rating work, confirm each of these was read. If one is missing, retry via another EDGAR URL or the company's IR site; if still missing, stop and ask the user to upload the filing.
+Before research or rating work, confirm each of these was read; `scripts/fetch_filing.py` prints this check. Item 1B is often omitted by companies with nothing to report, and some put the financial statements after Item 15 instead of in Item 8; the script handles both. If one is missing, retry via another EDGAR URL or the company's IR site; if still missing, stop and ask the user to upload the filing.
 
 - **10-K**: Items 1, 1A, 1B, 1C, 2, 3, 5, 7, 7A, 8 (with notes), 9A.
 - **10-Q**: Part I Item 1 (financial statements and notes), Item 2 (MD&A), Item 3 (market risk), Item 4 (controls and procedures); Part II Item 1 (legal proceedings), Item 1A (risk factor updates), Item 2 (buybacks), and Items 3-6.

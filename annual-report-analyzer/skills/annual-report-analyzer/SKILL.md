@@ -43,7 +43,16 @@ Note the filing date, fiscal period end, and form type. They go on the cover of 
 
 ### 3. Check the filing is complete, then read it deliberately
 
-**Completeness gate.** Before any outside research, valuation, or rating work, confirm you actually read every required section of the filing. The checklist is in `references/filing-guide.md` (10-K items, or 10-Q Parts I and II). Legal Proceedings and Controls and Procedures count; they are not optional.
+**Download and split the filing with the script.** Web-fetch tools silently truncate long pages, which is how late sections (legal proceedings, controls) went missing. Do not read a 10-K or 10-Q through a web fetch. Instead run:
+
+```bash
+python scripts/fetch_filing.py <TICKER> --form 10-K --out filing    # or --form 10-Q
+python scripts/fetch_filing.py --file <uploaded file> --form 10-K --out filing   # for an upload
+```
+
+It saves the whole filing, writes one text file per Item (`filing/item_1A.txt`, `filing/part2_item_1.txt`, ...), and prints a table of which required sections were found. Read each section file in turn; `full.txt` is the whole filing. Set `SEC_USER_AGENT` to a name and email if SEC rejects the request. If the script cannot download the filing, ask the user to upload it.
+
+**Completeness gate.** Before any outside research, valuation, or rating work, confirm you actually read every required section of the filing. The script's exit code and table are the check (exit 2 means a required section is missing or too short). The checklist is in `references/filing-guide.md` (10-K items, or 10-Q Parts I and II). Legal Proceedings and Controls and Procedures count; they are not optional.
 
 If any section is missing, truncated, or unreadable:
 

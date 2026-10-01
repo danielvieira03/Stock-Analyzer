@@ -12,7 +12,7 @@ Give it a company and it does what an equity analyst would: it reads the filing,
 
 1. **Intake:** company, filing type (latest 10-K by default, or a 10-Q) and an optional angle such as value or income.
 2. **Get the filing:** use your upload, or find the latest 10-K or 10-Q on SEC EDGAR and confirm the fiscal period. If it can't be retrieved, it asks you to upload it rather than writing from memory.
-3. **Check it's complete, then read it deliberately:** before any research, it confirms every required section was read, including legal proceedings and controls. If one can't be read, it retries another source and then asks you to upload the 10-Q or 10-K instead of continuing. It then reads the business, specific (not boilerplate) risk factors, MD&A, financial statements and notes.
+3. **Check it's complete, then read it deliberately:** it downloads the full filing with a script (web fetches truncate long pages) and splits it by Item. Before any research, it confirms every required section was read, including legal proceedings and controls. If one can't be read, it retries another source and then asks you to upload the 10-Q or 10-K instead of continuing. It then reads the business, specific (not boilerplate) risk factors, MD&A, financial statements and notes.
 4. **Compute the financials:** growth, margins, free cash flow, debt and coverage, and capital allocation, with the inputs shown so you can check the math.
 5. **Research outside the filing:** current price and multiples, news since the filing, competitors, management and insider activity, and the strongest bull and bear arguments.
 6. **Form the view:** the rating comes from four questions (quality, trajectory, price, risk), not from the company's story. A great business isn't a Buy at any price, and a beaten-down one isn't a Buy just because it fell.
@@ -95,7 +95,8 @@ annual-report-analyzer/
         │   ├── rating-framework.md  # How Buy / Hold / Sell is decided
         │   └── memo-structure.md    # Section guide, sourcing, markdown syntax
         ├── scripts/
-        │   └── build_memo_pdf.py    # Renders the memo Markdown to a consistent PDF
+        │   ├── build_memo_pdf.py    # Renders the memo Markdown to a consistent PDF
+        │   └── fetch_filing.py      # Downloads a 10-K/10-Q from EDGAR and splits it by Item
         └── examples/
             └── sample-memo.md       # Illustrative memo showing the format (fake data)
 ```
