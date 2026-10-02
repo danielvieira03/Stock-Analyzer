@@ -2,15 +2,20 @@
 company: Example Corp
 ticker: EXM
 rating: Hold
-filing: Form 10-K, fiscal year ended December 31, 2025 (illustrative data)
+coverage: Industrial Software
+sector: Software
+tagline: A high-quality franchise at a full price
 date: 2026-09-28
 price: $100.00 (as of 2026-09-28, illustrative)
-market_cap: $5.05B (illustrative)
+week_range: $78.00 - $112.00
+market_cap: $5.05B
+ntm_pe: 23.0x
+ev_ebitda: 15.5x
+from_ath: -10.7%
 price_target: $103 (12-month, probability-weighted)
 upside: +2.8%
-value_range: $74 - $128
-horizon: 12 months
-confidence: Medium
+conviction: Medium
+filing: Form 10-K, fiscal year ended December 31, 2025 (illustrative data)
 ---
 
 ## Executive Summary

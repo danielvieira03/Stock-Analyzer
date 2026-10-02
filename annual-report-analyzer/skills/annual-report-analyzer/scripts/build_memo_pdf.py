@@ -113,7 +113,7 @@ styles = {
     ),
     "cover_name": ParagraphStyle(
         "cover_name", fontName=BOLD_FONT, fontSize=24, leading=28,
-        textColor=NAVY,
+        textColor=INK,
     ),
     "cover_tagline": ParagraphStyle(
         "cover_tagline", fontName=ITALIC_FONT, fontSize=10.5, leading=14,
@@ -341,13 +341,16 @@ def split_note(value):
     return (m.group(1), m.group(2)) if m else (value, "")
 
 
-def build_tile_row(fields, drop_empty=False):
-    """Row of label/value tiles. Empty fields show a dash, or are dropped if drop_empty."""
+def is_missing(value):
+    """True for an empty value or a dash used to mean 'no value'."""
+    return value.strip() in ("", "-", "\u2013", "\u2014")
+
+
+def build_tile_row(fields):
+    """Row of label/value tiles. A missing value shows a dash under its label."""
     cells = []
     for label, raw in fields:
-        if drop_empty and not raw:
-            continue
-        main, note = split_note(raw)
+        main, note = split_note("" if is_missing(raw) else raw)
         value_style = styles["tile_value"]
         if label.startswith(("UPSIDE", "FROM ATH")) and main:
             color = GOOD if main.startswith("+") else BAD if main.startswith("-") else NAVY
@@ -372,26 +375,9 @@ def build_tile_row(fields, drop_empty=False):
     return t
 
 
-def build_tiles(meta):
-    """Standard stat tiles, used when no valuation-strip fields are provided.
-
-    When a price target is given, the rating box carries the target and upside,
-    so the tiles leave them out to avoid showing the same numbers twice.
-    """
-    fields = [("PRICE", meta.get("price", "")), ("MARKET CAP", meta.get("market_cap", ""))]
-    if not meta.get("price_target"):
-        fields += [("VALUE RANGE", meta.get("value_range", "")),
-                   ("UPSIDE / DOWNSIDE", meta.get("upside", ""))]
-    fields += [("HORIZON", meta.get("horizon", "")),
-               ("CONFIDENCE", meta.get("confidence", ""))]
-    return build_tile_row(fields)
-
-
-STRIP_KEYS = ("week_range", "ntm_pe", "ev_ebitda", "from_ath")
-
-
 def build_valuation_strip(meta):
-    """Valuation strip. A missing value shows a dash (a company with negative earnings has no P/E)."""
+    """The same six metrics on every report. NTM P/E and EV/EBITDA may be a dash
+    (a company with negative earnings has no P/E); the other four are required."""
     return build_tile_row([
         ("CURRENT PRICE", meta.get("price", "")),
         ("52-WEEK RANGE", meta.get("week_range", "")),
@@ -466,10 +452,8 @@ def build_name_block(meta):
 
 
 def build_rating_box(meta):
-    """Rating callout. Shown only when a price target is provided."""
+    """Rating callout, shown on every report."""
     target = meta.get("price_target", "").strip()
-    if not target:
-        return None
     rating = meta.get("rating", "").strip()
     conviction = meta.get("conviction") or meta.get("confidence", "")
     fields = [("PRICE TARGET", target), ("UPSIDE / DOWNSIDE", meta.get("upside", "")),
@@ -508,7 +492,7 @@ def build_rating_box(meta):
 
 def build_info_row(meta):
     """Small row of extra facts at the bottom of the cover; only what is provided."""
-    pairs = [("ANALYST", meta.get("analyst", "")), ("COVERAGE", meta.get("coverage", "")),
+    pairs = [("ANALYST", meta.get("analyst", "")),
              ("FY REVENUE EST.", meta.get("fy_revenue", "")),
              ("FY MARGIN EST.", meta.get("fy_margin", "")),
              ("FY EPS EST.", meta.get("fy_eps", "")),
@@ -537,12 +521,8 @@ def build_cover(meta):
     if badges:
         flow += [badges, Spacer(1, 9)]
     flow += build_name_block(meta)
-    flow.append(Spacer(1, 12))
-    has_strip = any(meta.get(k) for k in STRIP_KEYS)
-    flow.append(build_valuation_strip(meta) if has_strip else build_tiles(meta))
-    box = build_rating_box(meta)
-    if box:
-        flow += [Spacer(1, 8), box]
+    flow += [Spacer(1, 12), build_valuation_strip(meta), Spacer(1, 8),
+             build_rating_box(meta)]
     filing = meta.get("filing", "")
     if filing:
         flow.append(Paragraph(f"<b>Source filing:</b> {inline(filing)}",
@@ -553,6 +533,31 @@ def build_cover(meta):
     if info:
         flow += [info, Spacer(1, 4)]
     return flow
+
+
+# Fields every report must have. If one is missing the report is not generated.
+REQUIRED_COVER = (
+    ("company", "company name"), ("ticker", "ticker"), ("rating", "rating (Buy, Hold or Sell)"),
+    ("date", "report date"), ("coverage", "coverage area"),
+    ("price", "current price"), ("week_range", "52-week range"),
+    ("market_cap", "market cap"), ("from_ath", "change from all-time high"),
+    ("price_target", "price target"), ("upside", "upside/downside"),
+)
+
+
+def validate_cover(meta):
+    """Exit with a clear message if any required cover field is missing.
+    NTM P/E and EV/EBITDA are not required: a missing one shows a dash."""
+    missing = [label for key, label in REQUIRED_COVER if is_missing(meta.get(key, ""))]
+    if is_missing(meta.get("conviction", "")) and is_missing(meta.get("confidence", "")):
+        missing.append("conviction (or confidence)")
+    rating = meta.get("rating", "").strip()
+    if rating and rating.lower() not in RATING_COLORS:
+        missing.append("a rating of exactly Buy, Hold or Sell (got %r)" % rating)
+    if missing:
+        sys.exit("Cannot generate the report. Missing required cover data: "
+                 + "; ".join(missing)
+                 + ".\nRetrieve it or ask the user for it; do not render the report without it.")
 
 
 # ---- Body ------------------------------------------------------------------
@@ -678,13 +683,12 @@ def parse_body(lines):
 
 
 # ---- Page furniture --------------------------------------------------------
-CTX_KEYS = ("company", "ticker", "rating", "date", "firm", "audience_note",
-            "coverage", "report_type")
+CTX_KEYS = ("company", "ticker", "rating", "date", "coverage")
 PAGE_CTX = {k: "" for k in CTX_KEYS}
 
 
 def draw_first_page(canv, doc):
-    """Navy header band: firm, audience and coverage on the left; date and report type on the right."""
+    """Navy header band: coverage area on the left, report date on the right."""
     ctx = PAGE_CTX
     canv.saveState()
     top = PAGE_H - BAND_H
@@ -693,25 +697,15 @@ def draw_first_page(canv, doc):
     canv.setFillColor(GOLD)
     canv.rect(0, top - 3, PAGE_W, 3, stroke=0, fill=1)
 
-    soft = colors.HexColor("#C9D3E0")
-    y = PAGE_H - 0.42 * inch
-    for key, font, size, color in (("firm", BOLD_FONT, 9.5, GOLD),
-                                   ("audience_note", BASE_FONT, 8, soft),
-                                   ("coverage", BASE_FONT, 8, soft)):
-        if ctx[key]:
-            canv.setFillColor(color)
-            canv.setFont(font, size)
-            canv.drawString(MARGIN, y, ctx[key])
-            y -= 0.17 * inch
-
-    y = PAGE_H - 0.42 * inch
-    for key, font, size, color in (("date", BOLD_FONT, 9.5, colors.white),
-                                   ("report_type", BASE_FONT, 8, soft)):
-        if ctx[key]:
-            canv.setFillColor(color)
-            canv.setFont(font, size)
-            canv.drawRightString(PAGE_W - MARGIN, y, ctx[key])
-            y -= 0.17 * inch
+    y = PAGE_H - 0.52 * inch
+    if ctx["coverage"]:
+        canv.setFillColor(GOLD)
+        canv.setFont(BOLD_FONT, 9.5)
+        canv.drawString(MARGIN, y, ctx["coverage"].upper())
+    if ctx["date"]:
+        canv.setFillColor(colors.white)
+        canv.setFont(BOLD_FONT, 9.5)
+        canv.drawRightString(PAGE_W - MARGIN, y, ctx["date"])
     canv.restoreState()
 
 
@@ -773,9 +767,7 @@ def main():
         lines = f.read().splitlines()
 
     meta, body_lines = parse_metadata(lines)
-    if not meta.get("firm"):
-        print("Warning: no 'firm' in the metadata; the cover banner will have no firm name.",
-              file=sys.stderr)
+    validate_cover(meta)
     company = meta.get("company", "Company")
     for key in CTX_KEYS:
         PAGE_CTX[key] = meta.get(key, "").strip()

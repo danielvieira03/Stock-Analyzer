@@ -12,59 +12,55 @@ Every report uses the same sections in the same order, so readers learn where to
 
 ## Header block (metadata)
 
-The report begins with a metadata block the PDF builder turns into the page-1 header band and stat tiles. Use these exact keys:
+The report begins with a metadata block the PDF builder turns into the page-1 cover: a banner (coverage area and date), rating and ticker pills, the company name with a tagline, a valuation strip, and a rating box. Use these exact keys:
 
 ```
 ---
 company: Apple Inc.
 ticker: AAPL
 rating: Buy
-filing: Form 10-K, fiscal year ended September 28, 2024
+coverage: Consumer Hardware
+sector: Technology
+tagline: A few words that define the report
 date: 2026-09-28
 price: $000.00 (as of 2026-09-28)
+week_range: $000.00 - $000.00
 market_cap: $0.0T
+ntm_pe: 00.0x
+ev_ebitda: 00.0x
+from_ath: -0.0%
 price_target: $000 (12-month, probability-weighted)
 upside: +0.0%
-value_range: $000 - $000
-horizon: 12 months
-confidence: Medium
+conviction: Medium
+filing: Form 10-K, fiscal year ended September 28, 2024
 ---
 ```
 
-`rating` must be exactly `Buy`, `Hold`, or `Sell`. The builder colors the rating badge accordingly. `date` is the report date. `price` includes its as-of date in parentheses; text in parentheses is shown as a small note under the value. `price_target` is the probability-weighted price from the Scenario Analysis. `upside` is target versus price, with a sign (`+12.4%` or `-6.0%`). `value_range` is the bear-to-bull span and is shown only if `price_target` is missing. Any missing key shows a dash.
+**Required.** The builder refuses to run, and prints which fields are missing, unless all of these are present: `company`, `ticker`, `rating`, `date`, `coverage`, `price`, `week_range`, `market_cap`, `from_ath`, `price_target`, `upside`, and `conviction` (or `confidence`). If one cannot be retrieved, do not generate the report: tell the user what is missing and ask for it. Never invent or estimate a value.
 
-### Optional cover fields
+**Dash allowed.** `ntm_pe` and `ev_ebitda` may be left out or written as `-`; the cover then shows a dash under the label (for example, a company with negative earnings has no meaningful P/E).
 
-These add parts to the page-1 cover. Every one is optional. Include a field only when you have a real, sourced value for it. Never invent or estimate a value to fill a slot, and never use a placeholder: a missing optional field removes its slot from the cover, except in the stat tiles and the valuation strip, where a missing value shows a dash under its label (for example, no P/E for a company with negative earnings).
+**Optional.** `sector` (text beside the pills), `tagline` (one italic line under the company name; the skill always writes one, a few words defining the report), `filing` (the "Source filing" line), and the info-row fields `analyst` (only a name the user supplied), `next_earnings`, `fy_revenue`, `fy_margin`, `fy_eps`. The info row appears only if at least one of these is given.
 
-| Key | What it unlocks |
-|-----|-----------------|
-| `firm` | Firm name, top left of the banner. Every report should have one: ask the user for it at intake unless they already gave it. Use only what the user gives you; never default to a real bank or brokerage, and the builder shows no fallback text if it is missing. |
-| `audience_note` | Line under the firm name (for example, who the report is for). |
-| `coverage` | Coverage area, under the audience note in the banner and in the bottom info row. |
-| `report_type` | Under the date, top right of the banner (for example, "Initiation of coverage"). |
-| `sector` | Text label beside the rating and ticker pills. |
-| `tagline` | One italic line under the company name. |
-| `week_range` | 52-Week Range in the valuation strip. |
-| `ntm_pe` | NTM P/E in the valuation strip. |
-| `ev_ebitda` | EV/EBITDA in the valuation strip. |
-| `from_ath` | From ATH (change from the all-time high, with sign) in the valuation strip. |
-| `market_cap`, `price` | Market Cap and Current Price in the valuation strip (already part of the core block). |
-| `price_target` | Shows the rating callout box (rating, Price Target, Upside/Downside, Conviction). Without it, no box is drawn. |
-| `upside` | Upside/Downside cell of the callout (already part of the core block). |
-| `conviction` | Conviction cell of the callout. If absent, `confidence` is used. |
-| `analyst` | Analyst, in the bottom info row. Use only a name the user supplied. |
-| `next_earnings` | Next Earnings date, in the info row. |
-| `fy_revenue`, `fy_margin`, `fy_eps` | FY revenue, margin and EPS estimates, in the info row. |
+How the fields are used:
 
-The valuation strip (Current Price, 52-Week Range, Market Cap, NTM P/E, EV/EBITDA, From ATH) appears when at least one of `week_range`, `ntm_pe`, `ev_ebitda`, or `from_ath` is given; any of its six cells without data shows a dash. If none of those four is given, the standard six tiles show instead (price, market cap, value range, upside, horizon, confidence; when `price_target` is given, the rating box carries the target and upside, so the tiles leave them out). The info row appears when at least one of `analyst`, `coverage`, `fy_revenue`, `fy_margin`, `fy_eps`, or `next_earnings` is given.
+| Key | Where it appears |
+|-----|------------------|
+| `coverage` | Banner, top left. |
+| `date` | Banner, top right. |
+| `rating` | Colored pill (Buy green, Hold amber, Sell red) and the rating box. Must be exactly `Buy`, `Hold`, or `Sell`. |
+| `ticker` | Dark pill, and small gray text beside the company name. |
+| `price`, `week_range`, `market_cap`, `ntm_pe`, `ev_ebitda`, `from_ath` | The six valuation-strip cells, always in this order. Text in parentheses (such as an as-of date) shows as a small note under the value. `from_ath` takes a sign (`-15.5%`). |
+| `price_target`, `upside`, `conviction` | Rating box. `price_target` is the probability-weighted price from the Scenario Analysis. `upside` is target versus price, with a sign. |
+
+There is no `firm`, `audience_note`, `report_type`, `value_range`, or `horizon` field on the cover, and no separate row of standard tiles.
 
 ## Section-by-section guide
 
 Section headings are numbered automatically. Write them without numbers. Section 1 sits alone on page 1 with the header band, so keep it to one page.
 
 ### 1. Executive Summary
-A one-page snapshot. Do not open with the rating. The first paragraph gives the thesis in two or three sentences and the facts that drive it, and ends by stating the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Then cover the three to five driving facts, the main risk, and the probability-weighted price target versus the current price. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear in the stat tiles, so do not repeat them in a table.
+A one-page snapshot. Do not open with the rating. The first paragraph gives the thesis in two or three sentences and the facts that drive it, and ends by stating the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Then cover the three to five driving facts, the main risk, and the probability-weighted price target versus the current price. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear on the cover (valuation strip and rating box), so do not repeat them in a table.
 
 ### 2. Company Overview
 What the company does, how it makes money, revenue by segment and geography, key products, customers, scale (revenue, employees, market cap), and any recent strategic changes. A segment table is usually worth including.
@@ -151,18 +147,20 @@ Place this as the final paragraph of Sources and Methodology:
 company: 
 ticker: 
 rating: 
-filing: 
+coverage: 
+sector: 
+tagline: 
 date: 
 price: 
+week_range: 
 market_cap: 
+ntm_pe: 
+ev_ebitda: 
+from_ath: 
 price_target: 
 upside: 
-value_range: 
-horizon: 12 months
-confidence: 
-# Optional cover fields, add only with real data: firm, audience_note, coverage,
-# report_type, sector, tagline, week_range, ntm_pe, ev_ebitda, from_ath, conviction,
-# analyst, next_earnings, fy_revenue, fy_margin, fy_eps
+conviction: 
+filing: 
 ---
 
 ## Executive Summary

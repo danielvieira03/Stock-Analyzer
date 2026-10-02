@@ -16,7 +16,7 @@ Give it a company and it does what an equity analyst would: it reads the filing,
 4. **Compute the financials:** growth, margins, free cash flow, debt and coverage, and capital allocation, with the inputs shown so you can check the math.
 5. **Research outside the filing:** current price and multiples, news since the filing, competitors, management and insider activity, and the strongest bull and bear arguments.
 6. **Form the view:** the rating comes from four questions (quality, trajectory, price, risk), not from the company's story. A great business isn't a Buy at any price, and a beaten-down one isn't a Buy just because it fell.
-7. **Write and render:** twelve fixed sections plus a sources appendix, rendered to a PDF with a header band, rating badge and stat tiles for price, market cap, target and upside.
+7. **Write and render:** twelve fixed sections plus a sources appendix, rendered to a PDF with a banner, rating and ticker pills, a valuation strip (price, 52-week range, market cap, NTM P/E, EV/EBITDA, distance from the all-time high) and a rating box. If a required cover metric can't be retrieved, the report isn't generated.
 
 ## How to read a memo
 

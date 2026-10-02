@@ -25,15 +25,13 @@ Work through these stages in order. Do not skip the intake or the sourcing, sinc
 
 ### 1. Intake
 
-Establish these. If the user already gave them, do not ask again.
+Establish three things. If the user already gave them, do not ask again.
 
 - **Company**: name or ticker.
 - **Filing**: the latest 10-K by default; a 10-Q if the user asks for it or if the 10-Q is more recent and they want an update. If they uploaded a file, use it and confirm the company, form type, and period covered.
 - **Angle** (optional): a holding period or lens such as "long-term compounder", "value", or "income". Default to a 12-month view for a generalist investor.
 
-- **Firm**: the firm name shown on the cover banner (`firm` in the metadata). Ask for it every run unless the user already gave it, for example in the command or earlier in the conversation. Never invent one or use a real bank's name.
-
-Ask at most one short question if something essential is missing (combine company and firm if both are missing). Otherwise proceed.
+Ask at most one short question if something essential is missing. Otherwise proceed.
 
 ### 2. Get the filing
 
@@ -89,7 +87,7 @@ Show your inputs for any calculated figure so the reader can check it (for examp
 
 A filing is backward-looking and management-authored. Use web search to add:
 
-- **Market context**: current share price, market cap, and valuation multiples (P/E, EV/EBITDA, price-to-FCF, or whatever fits the business), and how they compare to the company's own history and to peers.
+- **Market context**: current share price, 52-week range, market cap, NTM P/E, EV/EBITDA, distance from the all-time high, and other multiples that fit the business (such as price-to-FCF), and how they compare to the company's own history and to peers. The first six are required for the cover.
 - **What happened since the filing**: earnings releases, guidance changes, M&A, litigation, regulatory actions, leadership changes.
 - **Industry and competitors**: market size and growth, structure, key rivals, and share trends, from credible sources.
 - **Management**: tenure, track record, insider buying or selling, compensation alignment, and any governance concerns. Proxy statements (DEF 14A) are a good source.
@@ -144,9 +142,9 @@ Write the memo as Markdown following the syntax notes in `references/memo-struct
 python scripts/build_memo_pdf.py memo.md "<Company>_Investment_Memo.pdf"
 ```
 
-Fill the optional cover fields in the memo's metadata block (listed in `references/memo-structure.md`) whenever the filing or your research gives you a real value: sector, 52-week range, NTM P/E, EV/EBITDA, distance from the all-time high, next earnings date, and FY estimates. Leave out any field you do not actually have, and never invent a value (or a firm or analyst name) just to unlock the richer cover layout.
+The cover always shows the same six valuation metrics (current price, 52-week range, market cap, NTM P/E, EV/EBITDA, change from the all-time high) and a rating box with the price target, upside, and conviction. Fill them in the memo's metadata block (see `references/memo-structure.md`) with real, dated values from your research. If the price, 52-week range, market cap, or change from the all-time high cannot be retrieved, or any other required cover field is missing, do not write or render the report: tell the user exactly what is missing and ask for it. A company with no meaningful NTM P/E or EV/EBITDA (for example, negative earnings) is the only exception; write `-` for that field and the cover shows a dash. Also write a `coverage` area and a `tagline` of a few words that defines the report. Never invent a value, or an analyst name. The builder checks the required fields and stops with a message if any is missing.
 
-The script needs `reportlab` (`pip install reportlab`). It gives every memo the same professional layout: a header band with the rating badge, stat tiles (price, market cap, target, upside), numbered section headings, styled tables with colored labels, and page headers and footers. If Python or file creation is unavailable in the current environment, deliver the memo as Markdown in the chat and mention that the PDF step needs a code-execution environment.
+The script needs `reportlab` (`pip install reportlab`). It gives every memo the same professional layout: a banner, rating and ticker pills, a valuation strip, a rating box, numbered section headings, styled tables with colored labels, and page headers and footers. If Python or file creation is unavailable in the current environment, deliver the memo as Markdown in the chat and mention that the PDF step needs a code-execution environment.
 
 Finish by giving the user the file and a two-to-three sentence summary of the rating and why. Do not repeat the whole memo in chat.
 
