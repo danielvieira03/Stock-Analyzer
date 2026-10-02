@@ -12,6 +12,7 @@ market_cap: $5.05B
 ntm_pe: 23.0x
 ev_ebitda: 15.5x
 from_ath: -10.7%
+from_6m_high: -6.0%
 price_target: $103 (12-month, probability-weighted)
 upside: +2.8%
 conviction: Medium
@@ -20,7 +21,12 @@ filing: Form 10-K, fiscal year ended December 31, 2025 (illustrative data)
 
 ## Executive Summary
 
-Example Corp is a high-quality operator whose shares already reflect its strengths. Revenue grew 8% and operating margin expanded to 21%, but the stock trades at 25x trailing earnings, a premium to its five-year average and to peers. Our probability-weighted 12-month value is $103, about 3% above the current price, which does not compensate for the downside if the auto end-market slows. Because of this, we rate the stock **Hold**.
+Example Corp is a high-quality operator whose shares already reflect its strengths: a good business at a full price. Because of this, we rate the stock **Hold**. The facts that drive our view:
+
+- **Growth and profitability.** Revenue grew 8% in FY2025 and operating margin expanded to 21%, up 260 basis points over two years.
+- **Valuation.** The stock trades at 25x trailing earnings, a premium to its five-year average of about 22x and to the peer median of 23x.
+- **Price target.** Our probability-weighted 12-month value is $103, about 3% above the current price, which does not compensate for the downside.
+- **Main risk.** A slowdown in the auto end-market, which is 31% of revenue, would cut growth and likely compress the multiple.
 
 > Key takeaway: a good business at a full price. We would become buyers below roughly $90 or on evidence that margins can exceed 23%.
 

@@ -49,14 +49,15 @@ In Claude Code:
 
 Or ask in plain language: "Analyze Costco's latest 10-K and give me an investment memo." You can also upload a filing; otherwise Claude fetches it from SEC EDGAR.
 
-The PDF step needs Python with `reportlab` (`pip install reportlab`). Without it, the memo is delivered as Markdown in chat.
+The PDF step needs Python with `reportlab` (`pip install reportlab`). The report uses the Source Serif 4 and Source Sans 3 fonts (SIL Open Font License) bundled in `scripts/../fonts`; if they are missing it falls back to the built-in Times and Helvetica. Without it, the memo is delivered as Markdown in chat.
 
 ## What's in a memo
 
-Twelve sections, always in the same order, plus a sources appendix:
+Twelve sections, always in the same order, plus a sources appendix. A thirteenth, "Why Has It Been Down Recently", is added when the stock is down more than 20% from its all-time high or more than 10% from its six-month high.
 
-1. **Executive Summary:** a one-page snapshot with price, market cap, target and headline figures; the rating comes at the end of the first paragraph as the conclusion.
+1. **Executive Summary:** a one-page snapshot with price, market cap, target and headline figures; the rating comes at the end of the first paragraph as the conclusion, followed by the facts that drive the view as bullet points.
 2. **Company Overview**
+   - *Why Has It Been Down Recently* (conditional): bullet points on every reason the stock has fallen, most important first, with no visible ranking.
 3. **Industry Analysis**
 4. **Competitive Advantage**
 5. **Management:** separate subsections for the CEO, Chairman and CFO.
@@ -97,6 +98,7 @@ annual-report-analyzer/
         ├── scripts/
         │   ├── build_memo_pdf.py    # Renders the memo Markdown to a consistent PDF
         │   └── fetch_filing.py      # Downloads a 10-K/10-Q from EDGAR and splits it by Item
+        ├── fonts/                   # Source Serif 4 and Source Sans 3 (OFL) used by the PDF
         └── examples/
             └── sample-memo.md       # Illustrative memo showing the format (fake data)
 ```

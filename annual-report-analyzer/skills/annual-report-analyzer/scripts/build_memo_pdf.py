@@ -9,6 +9,7 @@ Requires: reportlab  (pip install reportlab)
 Supported syntax is documented in references/memo-structure.md.
 """
 
+import os
 import re
 import sys
 from xml.sax.saxutils import escape
@@ -18,7 +19,9 @@ from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import inch
+from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.pdfmetrics import stringWidth
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas as rl_canvas
 from reportlab.platypus import (
     Flowable,
@@ -47,9 +50,41 @@ BAD = colors.HexColor("#B83232")
 NEUTRAL = colors.HexColor("#4A5B73")
 RATING_COLORS = {"buy": GOOD, "hold": WARN, "sell": BAD}
 
-BASE_FONT = "Helvetica"
-BOLD_FONT = "Helvetica-Bold"
-ITALIC_FONT = "Helvetica-Oblique"
+# ---- Fonts -----------------------------------------------------------------
+# Source Serif 4 for running text, Source Sans 3 for headings, tables and labels.
+# Both are OFL-licensed and live in ../fonts. If the files are missing the
+# builder falls back to the built-in Times and Helvetica.
+FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fonts")
+
+
+def register_family(name, files, fallback):
+    """Register a 4-face font family; return its (regular, bold, italic) names."""
+    faces = {}
+    try:
+        for key, fname in files.items():
+            face = f"{name}-{key}"
+            pdfmetrics.registerFont(TTFont(face, os.path.join(FONT_DIR, fname)))
+            faces[key] = face
+        pdfmetrics.registerFontFamily(
+            name, normal=faces["Regular"], bold=faces["Bold"],
+            italic=faces["Italic"], boldItalic=faces["BoldItalic"])
+        return faces["Regular"], faces["Bold"], faces["Italic"]
+    except Exception:
+        print(f"Warning: {name} font files not found in {os.path.normpath(FONT_DIR)}; "
+              "using built-in fonts instead.", file=sys.stderr)
+        return fallback
+
+
+SERIF, SERIF_BOLD, SERIF_ITALIC = register_family(
+    "SourceSerif4",
+    {"Regular": "SourceSerif4-Regular.ttf", "Bold": "SourceSerif4-Bold.ttf",
+     "Italic": "SourceSerif4-It.ttf", "BoldItalic": "SourceSerif4-BoldIt.ttf"},
+    ("Times-Roman", "Times-Bold", "Times-Italic"))
+BASE_FONT, BOLD_FONT, ITALIC_FONT = register_family(
+    "SourceSans3",
+    {"Regular": "SourceSans3-Regular.ttf", "Bold": "SourceSans3-Bold.ttf",
+     "Italic": "SourceSans3-It.ttf", "BoldItalic": "SourceSans3-BoldIt.ttf"},
+    ("Helvetica", "Helvetica-Bold", "Helvetica-Oblique"))
 
 PAGE_W, PAGE_H = letter
 MARGIN = 0.75 * inch
@@ -65,11 +100,11 @@ GLYPH_MAP = {
 
 styles = {
     "body": ParagraphStyle(
-        "body", fontName=BASE_FONT, fontSize=9.5, leading=13.8,
+        "body", fontName=SERIF, fontSize=9.8, leading=14,
         textColor=INK, alignment=TA_LEFT, spaceAfter=6.5,
     ),
     "body_small": ParagraphStyle(
-        "body_small", fontName=BASE_FONT, fontSize=8.3, leading=11.6,
+        "body_small", fontName=SERIF, fontSize=8.6, leading=11.8,
         textColor=INK, alignment=TA_LEFT, spaceAfter=5,
     ),
     "h2_num": ParagraphStyle(
@@ -84,12 +119,12 @@ styles = {
         textColor=ACCENT, spaceBefore=9, spaceAfter=3,
     ),
     "bullet": ParagraphStyle(
-        "bullet", fontName=BASE_FONT, fontSize=9.5, leading=13.5,
+        "bullet", fontName=SERIF, fontSize=9.8, leading=13.8,
         textColor=INK, leftIndent=16, bulletIndent=3, spaceAfter=3.5,
         alignment=TA_LEFT, bulletFontName=BOLD_FONT, bulletColor=GOLD,
     ),
     "callout": ParagraphStyle(
-        "callout", fontName=ITALIC_FONT, fontSize=9.5, leading=13.8,
+        "callout", fontName=SERIF_ITALIC, fontSize=9.8, leading=14,
         textColor=NAVY, alignment=TA_LEFT,
     ),
     "cell": ParagraphStyle(
@@ -116,7 +151,7 @@ styles = {
         textColor=INK,
     ),
     "cover_tagline": ParagraphStyle(
-        "cover_tagline", fontName=ITALIC_FONT, fontSize=10.5, leading=14,
+        "cover_tagline", fontName=SERIF_ITALIC, fontSize=11, leading=14.5,
         textColor=MUTED, spaceBefore=2, leftIndent=-6,
     ),
     "box_label": ParagraphStyle(
@@ -541,8 +576,39 @@ REQUIRED_COVER = (
     ("date", "report date"), ("coverage", "coverage area"),
     ("price", "current price"), ("week_range", "52-week range"),
     ("market_cap", "market cap"), ("from_ath", "change from all-time high"),
+    ("from_6m_high", "change from six-month high (used only to decide on the decline section)"),
     ("price_target", "price target"), ("upside", "upside/downside"),
 )
+
+
+DOWN_SECTION = "why has it been down recently"
+ATH_DROP, SIX_MONTH_DROP = -20.0, -10.0  # percent
+
+
+def pct(value):
+    """Leading signed number of a string like '-12.3%' (or with a Unicode minus)."""
+    m = re.match(r"\s*([+-]?\d+(?:\.\d+)?)", value.replace("\u2212", "-"))
+    return float(m.group(1)) if m else None
+
+
+def validate_down_section(meta, body_lines):
+    """The 'Why Has It Been Down Recently' section is required when the stock is
+    down more than 20% from its all-time high or more than 10% from its
+    six-month high, and should not appear otherwise."""
+    ath, six = pct(meta.get("from_ath", "")), pct(meta.get("from_6m_high", ""))
+    if ath is None or six is None:
+        sys.exit("Cannot generate the report: from_ath and from_6m_high must start with a "
+                 "signed percentage such as -12.3%.")
+    triggered = ath <= ATH_DROP or six <= SIX_MONTH_DROP
+    has = any(line.startswith("## ") and DOWN_SECTION in line.lower() for line in body_lines)
+    if triggered and not has:
+        sys.exit("Cannot generate the report: the stock is %.1f%% below its all-time high and "
+                 "%.1f%% below its six-month high, so it needs a '## Why Has It Been Down Recently' "
+                 "section (after Company Overview)." % (abs(ath), abs(six)))
+    if has and not triggered:
+        print("Warning: the 'Why Has It Been Down Recently' section is present, but the stock is "
+              "not down more than 20% from its all-time high or 10% from its six-month high.",
+              file=sys.stderr)
 
 
 def validate_cover(meta):
@@ -768,6 +834,7 @@ def main():
 
     meta, body_lines = parse_metadata(lines)
     validate_cover(meta)
+    validate_down_section(meta, body_lines)
     company = meta.get("company", "Company")
     for key in CTX_KEYS:
         PAGE_CTX[key] = meta.get(key, "").strip()

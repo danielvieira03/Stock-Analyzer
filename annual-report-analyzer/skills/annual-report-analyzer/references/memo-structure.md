@@ -29,6 +29,7 @@ market_cap: $0.0T
 ntm_pe: 00.0x
 ev_ebitda: 00.0x
 from_ath: -0.0%
+from_6m_high: -0.0%
 price_target: $000 (12-month, probability-weighted)
 upside: +0.0%
 conviction: Medium
@@ -36,7 +37,7 @@ filing: Form 10-K, fiscal year ended September 28, 2024
 ---
 ```
 
-**Required.** The builder refuses to run, and prints which fields are missing, unless all of these are present: `company`, `ticker`, `rating`, `date`, `coverage`, `price`, `week_range`, `market_cap`, `from_ath`, `price_target`, `upside`, and `conviction` (or `confidence`). If one cannot be retrieved, do not generate the report: tell the user what is missing and ask for it. Never invent or estimate a value.
+**Required.** The builder refuses to run, and prints which fields are missing, unless all of these are present: `company`, `ticker`, `rating`, `date`, `coverage`, `price`, `week_range`, `market_cap`, `from_ath`, `from_6m_high`, `price_target`, `upside`, and `conviction` (or `confidence`). If one cannot be retrieved, do not generate the report: tell the user what is missing and ask for it. Never invent or estimate a value.
 
 **Dash allowed.** `ntm_pe` and `ev_ebitda` may be left out or written as `-`; the cover then shows a dash under the label (for example, a company with negative earnings has no meaningful P/E).
 
@@ -50,6 +51,7 @@ How the fields are used:
 | `date` | Banner, top right. |
 | `rating` | Colored pill (Buy green, Hold amber, Sell red) and the rating box. Must be exactly `Buy`, `Hold`, or `Sell`. |
 | `ticker` | Dark pill, and small gray text beside the company name. |
+| `from_6m_high` | Not shown on the cover. It only decides whether the "Why Has It Been Down Recently" section is required (see below). Give it a sign, like `-12.3%`. |
 | `price`, `week_range`, `market_cap`, `ntm_pe`, `ev_ebitda`, `from_ath` | The six valuation-strip cells, always in this order. Text in parentheses (such as an as-of date) shows as a small note under the value. `from_ath` takes a sign (`-15.5%`). |
 | `price_target`, `upside`, `conviction` | Rating box. `price_target` is the probability-weighted price from the Scenario Analysis. `upside` is target versus price, with a sign. |
 
@@ -60,10 +62,15 @@ There is no `firm`, `audience_note`, `report_type`, `value_range`, or `horizon` 
 Section headings are numbered automatically. Write them without numbers. Section 1 sits alone on page 1 with the header band, so keep it to one page.
 
 ### 1. Executive Summary
-A one-page snapshot. Do not open with the rating. The first paragraph gives the thesis in two or three sentences and the facts that drive it, and ends by stating the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Then cover the three to five driving facts, the main risk, and the probability-weighted price target versus the current price. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear on the cover (valuation strip and rating box), so do not repeat them in a table.
+A one-page snapshot. Do not open with the rating. The first paragraph gives the thesis in two or three sentences and ends by stating the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Then list the three to five facts that drive the view as bullet points, one fact per bullet. Bullets are for readability, not brevity: each bullet keeps the same detail and numbers it would have had in a paragraph. Then give the main risk and the probability-weighted price target versus the current price in a sentence or two. Add a small table of headline figures (revenue, growth, margins, free cash flow). A reader who stops here should know what you think and why. Price, market cap, target, and upside appear on the cover (valuation strip and rating box), so do not repeat them in a table.
 
 ### 2. Company Overview
 What the company does, how it makes money, revenue by segment and geography, key products, customers, scale (revenue, employees, market cap), and any recent strategic changes. A segment table is usually worth including.
+
+### Why Has It Been Down Recently (conditional)
+Include this section, between Company Overview and Industry Analysis, only if the stock is down more than 20% from its all-time high (`from_ath`) or more than 10% from its highest price in the past six months (`from_6m_high`). Otherwise leave it out; the builder stops if it is required and missing, and warns if it is present when not required. Section numbers shift by one when it is present.
+
+Write it as bullet points only. Each bullet is one reason the stock has fallen, with the specific evidence and date: for example weak or cut guidance in the latest report, slowing growth, margin pressure, management or governance problems, macroeconomic headwinds, insider selling, competition, regulation or litigation, sector rotation, or a de-rating of the valuation multiple. Order the bullets from the most important reason to the least, but do not show the order: no numbers, no "main reason" or "secondary" labels. Include only reasons you found support for in sources; do not invent or speculate, and name sources in prose where useful.
 
 ### 3. Industry Analysis
 Market size and growth, structure (fragmented vs concentrated), cycle sensitivity, regulation, secular tailwinds and headwinds, and the forces that determine industry profitability. Draw on web sources; label them.
@@ -157,6 +164,7 @@ market_cap:
 ntm_pe: 
 ev_ebitda: 
 from_ath: 
+from_6m_high: 
 price_target: 
 upside: 
 conviction: 
@@ -166,6 +174,9 @@ filing:
 ## Executive Summary
 
 ## Company Overview
+
+<!-- Only if down more than 20% from the all-time high or more than 10% from the six-month high: -->
+## Why Has It Been Down Recently
 
 ## Industry Analysis
 

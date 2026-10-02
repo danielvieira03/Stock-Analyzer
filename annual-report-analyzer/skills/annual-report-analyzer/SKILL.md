@@ -87,7 +87,7 @@ Show your inputs for any calculated figure so the reader can check it (for examp
 
 A filing is backward-looking and management-authored. Use web search to add:
 
-- **Market context**: current share price, 52-week range, market cap, NTM P/E, EV/EBITDA, distance from the all-time high, and other multiples that fit the business (such as price-to-FCF), and how they compare to the company's own history and to peers. The first six are required for the cover.
+- **Market context**: current share price, 52-week range, market cap, NTM P/E, EV/EBITDA, distance from the all-time high, and other multiples that fit the business (such as price-to-FCF), and how they compare to the company's own history and to peers. The first six are required for the cover. Also find the highest closing price of the past six months and compute `from_6m_high` (its change from that price), which is needed to decide on the "Why Has It Been Down Recently" section but is not shown on the cover. If the stock is down more than 20% from its all-time high or more than 10% from its six-month high, research the causes: the latest earnings and guidance, analyst downgrades, news, management changes, insider selling, and macro or sector pressures.
 - **What happened since the filing**: earnings releases, guidance changes, M&A, litigation, regulatory actions, leadership changes.
 - **Industry and competitors**: market size and growth, structure, key rivals, and share trends, from credible sources.
 - **Management**: tenure, track record, insider buying or selling, compensation alignment, and any governance concerns. Proxy statements (DEF 14A) are a good source.
@@ -109,8 +109,9 @@ Before writing, state to yourself the thesis in two sentences and the single mos
 
 Use the structure in `references/memo-structure.md`. The sections, in order:
 
-1. Executive Summary (one-page snapshot; the rating comes at the end of the first paragraph)
+1. Executive Summary (one-page snapshot; the first paragraph ends with the rating, then the driving facts as bullet points)
 2. Company Overview
+   *Why Has It Been Down Recently* (only if the stock is down more than 20% from its all-time high or more than 10% from its six-month high; bullet points, most important reason first, with no visible ranking)
 3. Industry Analysis
 4. Competitive Advantage
 5. Management (subsections for the CEO, Chairman, and CFO)
@@ -127,7 +128,7 @@ Sources and Methodology follows as an appendix. `references/memo-structure.md` s
 Writing standards:
 
 - **Build to the answer.** The first paragraph states the thesis and the two or three facts that drive it, then closes with the rating as the conclusion (for example, "Because of this, we rate the stock Hold"). Do not open with the rating.
-- **Prose over bullets.** Write connected analysis, explaining why numbers matter rather than listing them. Use tables for financial data and comparisons, where they genuinely help.
+- **Prose over bullets.** Write connected analysis, explaining why numbers matter rather than listing them. Use tables for financial data and comparisons, where they genuinely help. The exceptions are the executive summary's driving facts and the "Why Has It Been Down Recently" section, which are bullet points.
 - **Attribute sources in plain prose.** Do not use bracketed tags. Name the filing (10-K, 10-Q, or 20-F) only where it matters, such as when management's claim differs from independent evidence, and name outside sources naturally (for example, "according to Reuters"). List every source in the Sources and Methodology appendix.
 - **Be specific and quantified.** "Operating margin fell from 24% to 21% as freight costs rose" beats "margins came under pressure."
 - **Be balanced.** Give the bear case real weight in the Risks section, the scenarios, and the rating logic.
