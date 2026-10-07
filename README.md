@@ -63,7 +63,7 @@ Twelve sections, always in the same order, plus a sources appendix. A thirteenth
 5. **Management:** separate subsections for the CEO, Chairman and CFO.
 6. **Financial Analysis**
 7. **Recommendation:** Buy / Hold / Sell, with each of the four questions (quality, trajectory, price, risk) as its own subtitle with reasoning, bull, base and bear probabilities and price-target ranges, and what would change the view.
-8. **Scenario Analysis:** per case, the probability, growth, forward EPS, P/E and price, plus the probability-weighted price target, and a subsection per case explaining the assumptions behind it.
+8. **Scenario Analysis:** per case, the probability, growth, forward EPS, P/E and price, plus the probability-weighted price target, and a subsection per case explaining the assumptions behind it. The growth, EPS and P/E inputs follow fixed rules so targets stay consistent from report to report.
 9. **Risks and Catalysts:** the top five of each, ranked and labeled High / Medium / Low (only those found), each explaining why it still matters and how it could materialize.
 10. **Wall Street Perspectives:** big-bank price targets with a one-sentence reason each.
 11. **Peer Analysis:** ratios (P/E, EV/EBITDA, margins, market cap, revenue growth) against the main competitors, with a short takeaway.

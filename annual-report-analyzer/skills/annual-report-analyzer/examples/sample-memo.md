@@ -127,6 +127,8 @@ Price in each case is next-fiscal-year (FY2026E) EPS multiplied by the P/E multi
 | Bear | 25% | 2% | -7.5% | 3.70 | 20.0x | 74.00 |
 | Weighted | 100% | 7.5% | 7.2% | 4.29 | n/a | 102.76 |
 
+Base inputs (illustrative): revenue growth of 8% at the guidance midpoint; operating margin of 21.0%, the latest trailing margin; a 27% tax rate, the FY2025 effective rate; 49.7M diluted shares after buybacks at the recent 2% pace; consensus FY2026E EPS of $4.30, within 5% of our $4.35; and a base P/E of 24.0x, the five-year average forward P/E of about 22x plus 2 turns for above-history growth.
+
 ### Bull case
 
 Probability 25%. Revenue growth accelerates to 12% as analytics add-ons, now 20% of sales and growing 14%, reach a larger share of the installed base, and gross margin keeps rising with scale. Operating margin reaches 23%, which lifts FY2026E EPS to $4.75. A 27x multiple is justified by faster growth and rising returns on capital, in line with the premium peers already carry. This case requires that rival bundling does not hurt pricing and that auto demand holds.

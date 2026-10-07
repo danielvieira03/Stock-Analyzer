@@ -101,7 +101,7 @@ Prefer primary and high-quality sources: company investor relations pages, SEC f
 
 Decide the rating using `references/rating-framework.md`. The core idea: a rating is a judgment about the gap between what the business is likely worth and what the market is paying, weighed against the risk of being wrong. Quality alone does not make a Buy, and a troubled company is not automatically a Sell if the price already reflects it.
 
-Build the bull, base, and bear cases before choosing the rating: for each, a probability, next-year revenue and EPS growth, forward EPS, and a P/E multiple. The probability-weighted price is the price target, and the rating follows from how it compares with today's price.
+Build the bull, base, and bear cases before choosing the rating: for each, a probability, next-year revenue and EPS growth, forward EPS, and a P/E multiple. Choose the revenue growth, EPS, and P/E inputs using the rules in `references/memo-structure.md` (section 8, "How to choose the inputs"). The probability-weighted price is the price target, and the rating follows from how it compares with today's price.
 
 Before writing, state to yourself the thesis in two sentences and the single most likely way it fails. If you cannot, the analysis is not finished.
 
