@@ -101,7 +101,7 @@ Two ranked tables under `### Top Risks` and `### Top Catalysts` subheadings, eac
 A table of price targets from major banks and brokers found in dated public sources: Firm, Date, Rating, Price target, and a Reason limited to one sentence. Add a final `Consensus` row with the rating split and the mean target. Include only targets you actually found; never invent or estimate a target. If a source is paywalled or unavailable, say so.
 
 ### 11. Peer Analysis
-A ratios-only table of the company against its three to five main competitors, with columns: P/E, EV/EBITDA, Operating margin, Net margin, FCF margin, Market cap, Revenue growth y/y. Put the subject company first and end with a `Peer median` row. State the as-of date and use consistent definitions across companies (trailing or forward, stated once). After the table, add a short takeaway (two or three sentences) saying where the company sits against the peer median, whether the premium or discount looks justified, and what that implies for the rating. A `> Takeaway:` callout works well.
+A ratios-only table of the company against its three to five main competitors, with columns: P/E, EV/EBITDA, Operating margin, Net margin, FCF margin, Market cap, Revenue growth y/y. Put the subject company first and end with a `Peer median` row. State the as-of date and use consistent definitions across companies (trailing or forward, stated once). After the table, add a short takeaway (two or three sentences) saying where the company sits against the peer median, whether the premium or discount looks justified, and what that implies for the rating.
 
 ### 12. Investment Conclusion
 One short paragraph: the final take, the rating and target, and the single most important thing to watch.
